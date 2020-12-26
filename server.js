@@ -1,11 +1,21 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import config from 'config';
+import mongoose from 'mongoose';
+
 import property from './routes/property';
 import review from './routes/review';
 import user from './routes/user';
 
-// load enviroment variables
-dotenv.config({ path: './env.env' });
+// connect to db
+mongoose
+  .connect(config.get('MONGO_URI'), {
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then(() => console.log('Database connected...!'))
+  .catch((err) => console.err(err));
 
 //initialize express
 const app = express();

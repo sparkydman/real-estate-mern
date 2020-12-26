@@ -1,4 +1,6 @@
 import express from 'express';
+import { addProperty } from '../controllers/property';
+import catchErro from '../utils/catchErro';
 
 const route = express.Router();
 
@@ -8,9 +10,7 @@ const route = express.Router();
 // @method POST
 // @authorization Private
 // @desc Add property
-route.post('/', (req, res) => {
-  res.send('add a property');
-});
+route.post('/', catchErro(addProperty));
 
 // @route /api/property/
 // @method GET
