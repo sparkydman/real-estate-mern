@@ -2,8 +2,8 @@
   "name": "real-estate-server",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon --exec babel-node server.js",
     "lint": "lint . --ignore-path .gitignore ",
