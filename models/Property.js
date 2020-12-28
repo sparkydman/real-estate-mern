@@ -59,7 +59,7 @@ const PropertySchema = new mongoose.Schema({
       'warehouse',
       'land',
     ],
-    required: [true, 'Category of the property is requi'],
+    required: [true, 'Category of the property is required'],
   },
   compound_space: String,
   property_size: String,
