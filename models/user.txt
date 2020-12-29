@@ -1,0 +1,12 @@
+create user
+	firstname
+	lastname
+	email
+	password
+	phone
+	address
+	role([customer,agent,admin], default:customer)
+	rating
+	badge
+	review({review})
+	createdAt
