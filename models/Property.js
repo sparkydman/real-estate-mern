@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import slugity from 'slugify';
 import geocode from '../utils/geocode';
 
+const { ObjectId } = mongoose.Schema;
+
 const PropertySchema = new mongoose.Schema({
   title: {
     type: String,
@@ -76,9 +78,25 @@ const PropertySchema = new mongoose.Schema({
       'Property description should not be less than 10 character',
     ],
   },
+  agent: { type: ObjectId, ref: 'User' },
+  purchasedBy: [
+    {
+      client: { type: ObjectId, ref: 'User' },
+      purchasedAt: { type: Date, default: Date.now() },
+    },
+  ],
   keywords: { type: String },
-  createdAt: { type: Date, default: Date.now },
+  sold: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now() },
 });
+
+const populateAgent = function (next) {
+  this.populate('agent', '_id firstname lastname avatar');
+  this.populate('purchasedBy.client', '_id firstname lastname avatar');
+  next();
+};
+
+PropertySchema.pre('findOne', populateAgent).pre('find', populateAgent);
 
 // slugify the tiitle
 PropertySchema.pre('save', function (next) {

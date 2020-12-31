@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 
+const { ObjectId } = mongoose.Schema;
+
 const UserShema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -24,6 +26,7 @@ const UserShema = new mongoose.Schema({
       'Please add a valid email',
     ],
   },
+  avatar: { type: String, default: 'avatar.jpg' },
   password: {
     type: String,
     select: false,
@@ -65,8 +68,9 @@ const UserShema = new mongoose.Schema({
     enum: ['Novies', 'Amateur', 'Intermidate', 'Master', 'Professional'],
     default: 'Novies',
   },
-  review: { type: String },
-  createdAt: { type: Date, default: Date.now },
+  properties: [{ type: ObjectId, ref: 'Property' }],
+  review: { type: ObjectId, ref: 'Review' },
+  createdAt: { type: Date, default: Date.now() },
 });
 
 UserShema.pre('save', async function (next) {
@@ -77,6 +81,17 @@ UserShema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
   this.confirmPassword = undefined;
 });
+
+const autoPoputlateReviewAndProperties = function (next) {
+  this.populate('review', '_id text user');
+  this.populate('properties');
+  next();
+};
+
+UserShema.pre('find', autoPoputlateReviewAndProperties).pre(
+  'findOne',
+  autoPoputlateReviewAndProperties
+);
 
 // match password for logging in
 UserShema.methods.isPassword = async function (enterPassword) {

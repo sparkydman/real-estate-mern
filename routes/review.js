@@ -1,4 +1,7 @@
 import express from 'express';
+import catchError from '../utils/catchError';
+import { requiredAuth, requiredRole } from '../middleware/auth';
+import { addReview } from '../controllers/review';
 
 const route = express.Router();
 
@@ -8,9 +11,12 @@ const route = express.Router();
 // @method POST
 // @authorization Private
 // @desc Add review
-route.post('/', (req, res) => {
-  res.send('add a review');
-});
+route.post(
+  '/property/:type',
+  requiredAuth,
+  requiredRole('customer'),
+  catchError(addReview)
+);
 
 // @route /api/review/
 // @method GET

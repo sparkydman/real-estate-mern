@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import User from '../models/User';
 import ErrorRes from '../utils/ErrorRes';
 import config from 'config';
@@ -5,6 +6,7 @@ import config from 'config';
 export const register = async (req, res) => {
   const user = new User(req.body);
   await user.save();
+  req.user = user;
   sendClientToken(user, 200, res);
 };
 
@@ -30,7 +32,7 @@ export const login = async (req, res) => {
       error: new ErrorRes('Invalid email or password', null, 404),
     });
   }
-
+  req.user = user;
   sendClientToken(user, 200, res);
 };
 
@@ -63,6 +65,19 @@ export const getAllUsers = async (req, res) => {
   });
 };
 
+export const getUserById = async (req, res, next, id) => {
+  const user = await User.findOne({ _id: id });
+  if (user) {
+    req.profile = user;
+    const profileId = Types.ObjectId(req.profile._id);
+    if (req.user && req.user._id.equals(profileId)) {
+      req.isMyProfile = true;
+      return next();
+    }
+  }
+  next();
+};
+
 export const getSingleUser = async (req, res) => {
   const user = await User.findOne({ _id: req.params.id });
   res.status(200).json({
@@ -72,20 +87,31 @@ export const getSingleUser = async (req, res) => {
 };
 
 export const getLoggedUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.user.id });
+  if (!req.isLoginUser) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes('You are not authorize', null, 401),
+    });
+  }
   res.status(200).json({
     success: true,
-    data: user,
+    data: req.user,
   });
 };
 
 export const updateProfile = async (req, res) => {
   let id;
   if (req.user.role === 'admin') {
-    id = req.params.id;
+    id = req.profile._id;
+  } else if (req.isMyProfile) {
+    id = req.user._id;
   } else {
-    id = req.user.id;
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes('You are not authorize', null, 401),
+    });
   }
+
   const user = await User.findOneAndUpdate(
     { _id: id },
     { $set: req.body },
@@ -97,16 +123,27 @@ export const updateProfile = async (req, res) => {
   });
 };
 
+export const logout = (req, res) => {
+  req.user = {};
+  req.profile = {};
+  res.status(200).clearCookie('token').json({
+    success: true,
+    data: 'You are logged out',
+  });
+};
+
 export const deleteUser = async (req, res) => {
   let id;
   if (req.user.role === 'admin') {
-    id = req.params.id;
+    id = req.profile._id;
+  } else if (req.isMyProfile) {
+    id = req.user._id;
   } else {
-    id = req.user.id;
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes('You are not authorize', null, 401),
+    });
   }
   await User.findOneAndDelete({ _id: id });
-  res.status(200).json({
-    success: true,
-    data: 'deleted',
-  });
+  logout(req, res);
 };
