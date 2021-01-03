@@ -67,14 +67,19 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserById = async (req, res, next, id) => {
   const user = await User.findOne({ _id: id });
-  if (user) {
-    req.profile = user;
-    const profileId = Types.ObjectId(req.profile._id);
-    if (req.user && req.user._id.equals(profileId)) {
-      req.isMyProfile = true;
-      return next();
-    }
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('User not found', null, 404),
+    });
   }
+  req.profile = user;
+  const profileId = Types.ObjectId(req.profile._id);
+  if (req.user && req.user._id.equals(profileId)) {
+    req.isMyProfile = true;
+    return next();
+  }
+
   next();
 };
 
@@ -100,20 +105,14 @@ export const getLoggedUser = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-  let id;
-  if (req.user.role === 'admin') {
-    id = req.profile._id;
-  } else if (req.isMyProfile) {
-    id = req.user._id;
-  } else {
+  if (!req.profile && !(req.user.role === 'admin' || req.isMyProfile)) {
     return res.status(401).json({
       success: false,
       error: new ErrorRes('You are not authorize', null, 401),
     });
   }
-
   const user = await User.findOneAndUpdate(
-    { _id: id },
+    { _id: req.profile._id },
     { $set: req.body },
     { runValidators: true, new: true }
   );
@@ -133,17 +132,12 @@ export const logout = (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  let id;
-  if (req.user.role === 'admin') {
-    id = req.profile._id;
-  } else if (req.isMyProfile) {
-    id = req.user._id;
-  } else {
+  if (!req.profile && !(req.user.role === 'admin' || req.isMyProfile)) {
     return res.status(401).json({
       success: false,
       error: new ErrorRes('You are not authorize', null, 401),
     });
   }
-  await User.findOneAndDelete({ _id: id });
+  await User.findOneAndDelete({ _id: req.profile._id });
   logout(req, res);
 };

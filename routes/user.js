@@ -10,7 +10,7 @@ import {
   register,
   updateProfile,
 } from '../controllers/user';
-import { requiredAuth, requiredRole } from '../middleware/auth';
+import { requiredAuth } from '../middleware/auth';
 import catchError from '../utils/catchError';
 
 const route = express.Router();

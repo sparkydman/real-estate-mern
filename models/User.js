@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
+import { validate } from '../../../devcamper-api/models/Bootcamp';
 
 const { ObjectId } = mongoose.Schema;
 
@@ -69,8 +70,18 @@ const UserShema = new mongoose.Schema({
     default: 'Novies',
   },
   properties: [{ type: ObjectId, ref: 'Property' }],
-  review: { type: ObjectId, ref: 'Review' },
+  reviews: [{ type: ObjectId, ref: 'Review' }],
   createdAt: { type: Date, default: Date.now() },
+});
+
+UserShema.pre('save', function (next) {
+  if (this.role === 'agent') {
+    next();
+  }
+  this.reviews === undefined;
+  this.rating === undefined;
+  this.badge === undefined;
+  this.properties === undefined;
 });
 
 UserShema.pre('save', async function (next) {

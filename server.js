@@ -19,7 +19,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => console.log('Database connected...!'))
-  .catch((err) => console.err(err));
+  .catch((err) => console.error(err));
 
 //initialize express
 const app = express();

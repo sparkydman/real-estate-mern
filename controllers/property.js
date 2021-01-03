@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Property from '../models/Property';
+import User from '../models/User';
 import ErrorRes from '../utils/ErrorRes';
 
 // Create property
@@ -16,7 +17,7 @@ export const addProperty = async (req, res) => {
   const property = new Property(req.body);
   const isTitle = await Property.findOne({ title: property.title });
   if (isTitle) {
-    return res.status(403).json({
+    return res.status(400).json({
       success: false,
       error: new ErrorRes('The title is already registered', 'title', 400),
     });
@@ -32,13 +33,18 @@ export const addProperty = async (req, res) => {
 // get property by Id
 export const getPropertyById = async (req, res, next, id) => {
   const property = await Property.findOne({ _id: id });
-  if (property) {
-    req.property = property;
-    const agentId = mongoose.Types.ObjectId(req.property.agent._id);
-    if (req.user && req.user._id.equals(agentId)) {
-      req.isPropertyAgent = true;
-      return next();
-    }
+
+  if (!property) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Property not found', null, 404),
+    });
+  }
+  req.property = property;
+  const agentId = mongoose.Types.ObjectId(req.property.agent._id);
+  if (req.user && req.user._id.equals(agentId)) {
+    req.isPropertyAgent = true;
+    return next();
   }
   next();
 };
@@ -59,6 +65,12 @@ export const getAllProperties = async (req, res) => {
 // Authorization public
 export const getSingleProperty = async (req, res) => {
   const property = await Property.findOne({ _id: req.params.id });
+  if (!property) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Property not found', null, 404),
+    });
+  }
   res.status(200).json({
     success: true,
     data: property,
@@ -73,7 +85,7 @@ export const updateProperty = async (req, res) => {
   if (!req.property && !(req.user.role === 'admin' || req.isPropertyAgent)) {
     return res.status(401).json({
       success: false,
-      error: ErrorRes('Unauthorized', null, 401),
+      error: new ErrorRes('Unauthorized', null, 401),
     });
   }
 
@@ -99,7 +111,7 @@ export const deleteProperty = async (req, res) => {
   if (!req.property && !(req.user.role === 'admin' || req.isPropertyAgent)) {
     return res.status(401).json({
       success: false,
-      error: ErrorRes('Unauthorized', null, 401),
+      error: new ErrorRes('Unauthorized', null, 401),
     });
   }
   id = req.property._id;
@@ -115,7 +127,7 @@ export const purchaseProperty = async (req, res) => {
   if (!req.property) {
     return res.status(404).json({
       success: false,
-      error: ErrorRes('Property not found', null, 404),
+      error: new ErrorRes('Property not found', null, 404),
     });
   }
 
@@ -124,17 +136,30 @@ export const purchaseProperty = async (req, res) => {
     { $set: { sold: true }, $push: { purchasedBy: { client: req.user._id } } },
     { new: true }
   );
-  res.status(404).json({
+  res.status(200).json({
     success: true,
     data: property,
   });
 };
 
 export const getAllPropertiesByAgent = async (req, res) => {
-  const properties = await Property.find({ agent: req.user._id }).sort({
+  const profile = await User.findOne({ _id: req.params.id });
+  if (!profile) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('User not found', null, 404),
+    });
+  }
+  if (profile.role !== 'agent') {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Agent not found', null, 404),
+    });
+  }
+  const properties = await Property.find({ agent: profile._id }).sort({
     createdAt: 'desc',
   });
-  res.status(404).json({
+  res.status(200).json({
     success: true,
     count: properties.length,
     data: properties,
@@ -142,13 +167,26 @@ export const getAllPropertiesByAgent = async (req, res) => {
 };
 
 export const getAllPropertiesSoldByAgent = async (req, res) => {
+  const profile = await User.findOne({ _id: req.params.id });
+  if (!profile) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('User not found', null, 404),
+    });
+  }
+  if (profile.role !== 'agent') {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Agent not found', null, 404),
+    });
+  }
   const properties = await Property.find({
-    agent: req.user._id,
+    agent: profile._id,
     sold: true,
   }).sort({
     createdAt: 'desc',
   });
-  res.status(404).json({
+  res.status(200).json({
     success: true,
     count: properties.length,
     data: properties,

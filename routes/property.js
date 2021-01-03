@@ -6,7 +6,11 @@ import {
   getPropertyById,
   getSingleProperty,
   updateProperty,
+  purchaseProperty,
+  getAllPropertiesByAgent,
+  getAllPropertiesSoldByAgent,
 } from '../controllers/property';
+import { getUserById } from '../controllers/user';
 import { requiredAuth, requiredRole } from '../middleware/auth';
 import catchError from '../utils/catchError';
 
@@ -15,7 +19,8 @@ const route = express.Router();
 // ----------PROPERTY CRUD -------------
 
 // get property for every /:id routes
-route.param('/:propertyId', getPropertyById);
+route.param('propertyId', getPropertyById);
+route.param('userId', getUserById);
 
 // @route /api/property/
 // @method POST, GET
@@ -29,12 +34,7 @@ route
 // @method GET
 // @authorization Public
 // @desc Get a single property
-route.get(
-  '/:id',
-  requiredAuth,
-  requiredRole('agent', 'admin'),
-  catchError(getSingleProperty)
-);
+route.get('/:id', catchError(getSingleProperty));
 
 // @route /api/property/:id
 // @method PUT
@@ -57,5 +57,28 @@ route.delete(
   requiredRole('agent', 'admin'),
   catchError(deleteProperty)
 );
+
+// @route /api/property/purchase/:propertyId
+// @method PUT
+// @authorization Private
+// @desc purchase a property by customer
+route.put(
+  '/purchase/:propertyId',
+  requiredAuth,
+  requiredRole('customer'),
+  catchError(purchaseProperty)
+);
+
+// @route /api/property/agent/:id
+// @method GET
+// @authorization Public
+// @desc get all properties by an agent
+route.get('/agent/:id', catchError(getAllPropertiesByAgent));
+
+// @route /api/property/agent/sold/:id
+// @method GET
+// @authorization Public
+// @desc Get all sold properties by an agent
+route.get('/agent/sold/:id', catchError(getAllPropertiesSoldByAgent));
 
 export default route;

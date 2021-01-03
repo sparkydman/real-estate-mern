@@ -87,6 +87,7 @@ const PropertySchema = new mongoose.Schema({
   ],
   keywords: { type: String },
   sold: { type: Boolean, default: false },
+  reviews: [{ type: ObjectId, ref: 'Review' }],
   createdAt: { type: Date, default: Date.now() },
 });
 
