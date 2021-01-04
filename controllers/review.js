@@ -114,6 +114,18 @@ export const getReviewById = async (req, res, next, id) => {
   }
   next();
 };
+export const getSingleReview = async (req, res) => {
+  if (!req.review) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Review not found', null, 404),
+    });
+  }
+  res.status(200).json({
+    success: true,
+    data: req.review,
+  });
+};
 
 export const updateReview = async (req, res) => {
   let id;
@@ -123,7 +135,7 @@ export const updateReview = async (req, res) => {
       error: new ErrorRes('Unauthorized', null, 401),
     });
   }
-  id = req.review._id;
+  id = req.review.id;
 
   const review = await Review.findOneAndUpdate(
     { _id: id },
@@ -144,7 +156,7 @@ export const deleteReview = async (req, res) => {
       error: new ErrorRes('Unauthorized', null, 404),
     });
   }
-  id = req.review._id;
+  id = req.review.id;
 
   await Review.findOneAndDelete({ _id: id });
   res.status(200).json({

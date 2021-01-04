@@ -97,14 +97,6 @@ const PropertySchema = new mongoose.Schema(
   }
 );
 
-// const populateAgent = function (next) {
-//   this.populate('agent', '_id firstname lastname avatar');
-//   this.populate('purchasedBy.client', '_id firstname lastname avatar');
-//   next();
-// };
-
-// PropertySchema.pre('findOne', populateAgent).pre('find', populateAgent);
-
 PropertySchema.virtual('reviews', {
   ref: 'Review',
   localField: '_id',

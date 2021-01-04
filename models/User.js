@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 
-const { ObjectId } = mongoose.Schema;
-
 const UserShema = new mongoose.Schema(
   {
     firstname: {
@@ -70,8 +68,7 @@ const UserShema = new mongoose.Schema(
       enum: ['Novies', 'Amateur', 'Intermidate', 'Master', 'Professional'],
       default: 'Novies',
     },
-    // properties: [{ type: ObjectId, ref: 'Property' }],
-    // reviews: [{ type: ObjectId, ref: 'Review' }],
+    bio: { Type: String },
     createdAt: { type: Date, default: Date.now() },
   },
   {
@@ -127,18 +124,6 @@ UserShema.pre('find', autoPoputlateReviewAndProperties).pre(
   'findOne',
   autoPoputlateReviewAndProperties
 );
-
-// const findOptions = function (next) {
-//   if (this.role !== 'agent') {
-//     this.select('-properties -badge -reviews -rating');
-//     next();
-//   }
-//   next();
-// };
-
-// UserShema.pre('findOne', findOptions)
-//   .pre('find', findOptions)
-//   .pre('findOneAndUpdate', findOptions);
 
 // match password for logging in
 UserShema.methods.isPassword = async function (enterPassword) {
