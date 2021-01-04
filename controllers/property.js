@@ -11,6 +11,16 @@ export const addProperty = async (req, res) => {
     .split(',')
     .map((word) => word.toLowerCase())
     .join(',');
+  if (req.user.role === 'admin' && !req.body.agent) {
+    return res.status(400).json({
+      success: false,
+      error: new ErrorRes(
+        'Admin required to provide the agent for the property',
+        'agent',
+        400
+      ),
+    });
+  }
   if (req.user.role === 'agent') {
     req.body.agent = req.user._id;
   }
@@ -32,7 +42,10 @@ export const addProperty = async (req, res) => {
 
 // get property by Id
 export const getPropertyById = async (req, res, next, id) => {
-  const property = await Property.findOne({ _id: id });
+  const property = await Property.findOne({ _id: id })
+    .populate('agent', '_id firstname lastname avatar')
+    .populate('purchasedBy.client', '_id firstname lastname avatar')
+    .populate('reviews', '_id text user');
 
   if (!property) {
     return res.status(404).json({
@@ -52,7 +65,11 @@ export const getPropertyById = async (req, res, next, id) => {
 // Get all properties
 // authorization public
 export const getAllProperties = async (req, res) => {
-  const properties = await Property.find().sort({ createdAt: 'desc' });
+  const properties = await Property.find()
+    .sort({ createdAt: 'desc' })
+    .populate('agent', '_id firstname lastname avatar')
+    .populate('purchasedBy.client', '_id firstname lastname avatar')
+    .populate('reviews', '_id text user');
 
   res.status(200).json({
     success: true,
@@ -64,7 +81,11 @@ export const getAllProperties = async (req, res) => {
 // Get single property
 // Authorization public
 export const getSingleProperty = async (req, res) => {
-  const property = await Property.findOne({ _id: req.params.id });
+  const property = await Property.findOne({ _id: req.params.id })
+    .populate('agent', '_id firstname lastname avatar')
+    .populate('purchasedBy.client', '_id firstname lastname avatar')
+    .populate('reviews', '_id text user');
+
   if (!property) {
     return res.status(404).json({
       success: false,

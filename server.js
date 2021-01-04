@@ -9,7 +9,6 @@ import user from './routes/user';
 
 import errorHandler from './middleware/error';
 import { getme } from './middleware/auth';
-
 // connect to db
 mongoose
   .connect(config.get('MONGO_URI'), {

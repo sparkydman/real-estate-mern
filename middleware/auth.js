@@ -17,6 +17,7 @@ export const requiredAuth = async (req, res, next) => {
     const decode = jwt.verify(token, config.get('JWT_SECRET'));
 
     const user = await User.findOne({ _id: decode.id });
+
     req.user = user;
     req.isLoginUser = true;
     next();

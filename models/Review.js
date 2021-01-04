@@ -31,18 +31,4 @@ const pupolateUser = function (next) {
 
 ReviewShema.pre('find', pupolateUser).pre('findOne', pupolateUser);
 
-ReviewShema.pre(
-  'save',
-  (ReviewShema.methods.getReviewType = function (type) {
-    return function (next) {
-      if (type === 'property') {
-        this.agent = undefined;
-      } else {
-        this.property = undefined;
-      }
-      next();
-    };
-  })
-);
-
 export default mongoose.model('Review', ReviewShema);

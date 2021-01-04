@@ -4,100 +4,113 @@ import geocode from '../utils/geocode';
 
 const { ObjectId } = mongoose.Schema;
 
-const PropertySchema = new mongoose.Schema({
-  title: {
-    type: String,
-    minlength: [5, 'Title should not be less than 10 characters'],
-    maxlength: [50, 'Title should not be more than 50 characters'],
-    trim: true,
-    unique: [true, 'Title you provided is already exist'],
-  },
-  slug: String,
-  address: {
-    type: String,
-    required: [true, 'Address of the property is required'],
-  },
-  location: {
-    type: { type: String, enum: ['Point'] },
-    coordinates: {
-      type: [Number],
-      index: '2dsphere',
+const PropertySchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      minlength: [5, 'Title should not be less than 10 characters'],
+      maxlength: [50, 'Title should not be more than 50 characters'],
+      trim: true,
+      unique: [true, 'Title you provided is already exist'],
     },
-    formattedAddress: String,
-    state: String,
-    city: String,
-    country: String,
-    countryCode: String,
-    street: String,
-    zipcode: String,
-    streetNumber: Number,
-    stateCode: String,
-  },
-  value_for: {
-    type: String,
-    enum: ['sale', 'rent'],
-    required: [true, 'How the property is valued is required'],
-  },
-  price: {
-    type: Number,
-    required: [true, 'Price of the property is required'],
-  },
-  condition: {
-    type: String,
-    enum: ['new', 'reconstructed', 'old', 'natural'],
-    required: [true, 'Condition of the property is required'],
-  },
-  category: {
-    type: String,
-    enum: [
-      'duplex',
-      'bowngalow',
-      'flat',
-      'self - contain',
-      'room',
-      'attach',
-      'container',
-      'shop',
-      'warehouse',
-      'land',
-    ],
-    required: [true, 'Category of the property is required'],
-  },
-  compound_space: String,
-  property_size: String,
-  quantity: Number,
-  imges: [{ type: String, size: Number }],
-  desccription: {
-    type: String,
-    maxlength: [
-      500,
-      'Property description should not be more than 500 character',
-    ],
-    minlength: [
-      10,
-      'Property description should not be less than 10 character',
-    ],
-  },
-  agent: { type: ObjectId, ref: 'User' },
-  purchasedBy: [
-    {
-      client: { type: ObjectId, ref: 'User' },
-      purchasedAt: { type: Date, default: Date.now() },
+    slug: String,
+    address: {
+      type: String,
+      required: [true, 'Address of the property is required'],
     },
-  ],
-  keywords: { type: String },
-  sold: { type: Boolean, default: false },
-  reviews: [{ type: ObjectId, ref: 'Review' }],
-  createdAt: { type: Date, default: Date.now() },
+    location: {
+      type: { type: String, enum: ['Point'] },
+      coordinates: {
+        type: [Number],
+        index: '2dsphere',
+      },
+      formattedAddress: String,
+      state: String,
+      city: String,
+      country: String,
+      countryCode: String,
+      street: String,
+      zipcode: String,
+      streetNumber: Number,
+      stateCode: String,
+    },
+    value_for: {
+      type: String,
+      enum: ['sale', 'rent'],
+      required: [true, 'How the property is valued is required'],
+    },
+    price: {
+      type: Number,
+      required: [true, 'Price of the property is required'],
+    },
+    condition: {
+      type: String,
+      enum: ['new', 'reconstructed', 'old', 'natural'],
+      required: [true, 'Condition of the property is required'],
+    },
+    category: {
+      type: String,
+      enum: [
+        'duplex',
+        'bowngalow',
+        'flat',
+        'self - contain',
+        'room',
+        'attach',
+        'container',
+        'shop',
+        'warehouse',
+        'land',
+      ],
+      required: [true, 'Category of the property is required'],
+    },
+    compound_space: String,
+    property_size: String,
+    quantity: Number,
+    imges: [{ type: String, size: Number }],
+    desccription: {
+      type: String,
+      maxlength: [
+        500,
+        'Property description should not be more than 500 character',
+      ],
+      minlength: [
+        10,
+        'Property description should not be less than 10 character',
+      ],
+    },
+    agent: { type: ObjectId, ref: 'User' },
+    purchasedBy: [
+      {
+        client: { type: ObjectId, ref: 'User' },
+        purchasedAt: { type: Date, default: Date.now() },
+      },
+    ],
+    keywords: { type: String },
+    sold: { type: Boolean, default: false },
+    // reviews: [{ type: ObjectId, ref: 'Review' }],
+    createdAt: { type: Date, default: Date.now() },
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+
+// const populateAgent = function (next) {
+//   this.populate('agent', '_id firstname lastname avatar');
+//   this.populate('purchasedBy.client', '_id firstname lastname avatar');
+//   next();
+// };
+
+// PropertySchema.pre('findOne', populateAgent).pre('find', populateAgent);
+
+PropertySchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'property',
+  justOnce: false,
 });
-
-const populateAgent = function (next) {
-  this.populate('agent', '_id firstname lastname avatar');
-  this.populate('purchasedBy.client', '_id firstname lastname avatar');
-  next();
-};
-
-PropertySchema.pre('findOne', populateAgent).pre('find', populateAgent);
 
 // slugify the tiitle
 PropertySchema.pre('save', function (next) {

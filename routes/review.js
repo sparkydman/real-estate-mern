@@ -2,8 +2,13 @@ import express from 'express';
 import catchError from '../utils/catchError';
 import { requiredAuth, requiredRole } from '../middleware/auth';
 import { addReview } from '../controllers/review';
+import { getPropertyById } from '../controllers/property';
+import { getUserById } from '../controllers/user';
 
 const route = express.Router();
+
+route.param('propertyId', getPropertyById);
+route.param('userId', getUserById);
 
 // ----------REVIEW CRUD -------------
 
@@ -12,7 +17,13 @@ const route = express.Router();
 // @authorization Private
 // @desc Add review
 route.post(
-  '/property/:type',
+  '/property/:propertyId',
+  requiredAuth,
+  requiredRole('customer'),
+  catchError(addReview)
+);
+route.post(
+  '/agent/:userId',
   requiredAuth,
   requiredRole('customer'),
   catchError(addReview)

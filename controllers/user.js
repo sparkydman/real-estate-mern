@@ -5,6 +5,7 @@ import config from 'config';
 
 export const register = async (req, res) => {
   const user = new User(req.body);
+  user.role = 'customer';
   await user.save();
   req.user = user;
   sendClientToken(user, 200, res);
@@ -109,6 +110,12 @@ export const updateProfile = async (req, res) => {
     return res.status(401).json({
       success: false,
       error: new ErrorRes('You are not authorize', null, 401),
+    });
+  }
+  if (req.user.role !== 'admin' && req.body.role) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes('Role is asigned by the admin', null, 401),
     });
   }
   const user = await User.findOneAndUpdate(
