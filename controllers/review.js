@@ -176,7 +176,7 @@ export const likeAndDislikeReview = async (req, res) => {
   const isDisLiked = req.review.dis_likes.includes(req.user._id);
   const review = await Review.findOne({ _id: req.review._id });
 
-  if (req.url.includes('likes') && isLiked) {
+  if (req.url.includes('like') && isLiked) {
     return res.status(409).json({
       success: false,
       error: new ErrorRes('You already liked this review'),
@@ -188,7 +188,7 @@ export const likeAndDislikeReview = async (req, res) => {
     await review.likes.push(req.user._id);
   }
 
-  if (req.url.includes('dislikes') && isDisLiked) {
+  if (req.url.includes('dislike') && isDisLiked) {
     return res.status(409).json({
       success: false,
       error: new ErrorRes('You already disliked this review'),

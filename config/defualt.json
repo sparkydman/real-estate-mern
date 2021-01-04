@@ -1,0 +1,10 @@
+{
+  "NODE_ENV": "development",
+  "PORT": 5500,
+  "MONGO_URI": "mongodb+srv://chigozie:chigozie@real-estate.rtpoj.mongodb.net/real-estate?retryWrites=true&w=majority",
+  "GEO_CODE_KEY": "9jCKRAgh8MPcoN15NIraxHVZEGb4Pn4i",
+  "GEO_CODE_SECRET": "lHFIjQrMEnIaLgje",
+  "GEO_CODE_PROVIDER": "mapquest",
+  "JWT_SECRET": "ksdfkdsjwnnhgie",
+  "JWT_EXPIRATION": "14d"
+}

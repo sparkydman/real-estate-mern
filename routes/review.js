@@ -6,6 +6,7 @@ import {
   deleteReview,
   getReviewById,
   getSingleReview,
+  likeAndDislikeReview,
   updateReview,
 } from '../controllers/review';
 import { getPropertyById } from '../controllers/property';
@@ -70,6 +71,28 @@ route.delete(
   requiredAuth,
   requiredRole('customer', 'admin'),
   catchError(deleteReview)
+);
+
+// @route /api/review/like:id
+// @method PUT
+// @authorization Private
+// @desc Like a review
+route.put(
+  'like/:reviewId',
+  requiredAuth,
+  requiredRole('customer'),
+  catchError(likeAndDislikeReview)
+);
+
+// @route /api/review/like:id
+// @method PUT
+// @authorization Private
+// @desc Dislike a review
+route.put(
+  'dislike/:reviewId',
+  requiredAuth,
+  requiredRole('customer'),
+  catchError(likeAndDislikeReview)
 );
 
 export default route;
