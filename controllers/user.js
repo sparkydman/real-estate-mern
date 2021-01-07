@@ -61,6 +61,33 @@ const sendClientToken = async (user, code, res) => {
 export const getAllUsers = async (req, res) => {
   res.status(200).json(res.queryResults);
 };
+export const getAllSearchedUsers = async (req, res) => {
+  const keywords = req.params.keywords
+    ? {
+        $or: [
+          {
+            firstname: {
+              $regex: req.params.keywords,
+              $options: 'i',
+            },
+          },
+          {
+            lastname: {
+              $regex: req.params.keywords,
+              $options: 'i',
+            },
+          },
+        ],
+      }
+    : {};
+  const user = await User.find({ ...keywords });
+
+  res.status(200).json({
+    success: true,
+    count: user.length,
+    data: user,
+  });
+};
 
 export const getUserById = async (req, res, next, id) => {
   const user = await User.findOne({ _id: id });

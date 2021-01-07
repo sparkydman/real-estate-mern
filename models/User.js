@@ -115,6 +115,8 @@ UserShema.virtual('reviews', {
   justOnce: false,
 });
 
+UserShema.index({ firstname: 'text', lastname: 'text' });
+
 const autoPoputlateReviewAndProperties = function (next) {
   this.populate('reviews', '_id text user');
   this.populate('properties', '_id title, purchasedBy');

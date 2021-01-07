@@ -4,6 +4,7 @@ import {
   changeEmail,
   changePassword,
   deleteUser,
+  getAllSearchedUsers,
   getAllUsers,
   getLoggedUser,
   getSingleUser,
@@ -30,6 +31,7 @@ route.post('/register', catchError(register));
 route.post('/login', catchError(login));
 
 route.get('/', query(User), catchError(getAllUsers));
+route.get('/search/:keywords', catchError(getAllSearchedUsers));
 
 route.get('/profile', requiredAuth, catchError(getLoggedUser));
 route.get('/:id', catchError(getSingleUser));

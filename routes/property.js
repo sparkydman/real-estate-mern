@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import {
   addProperty,
   deleteProperty,
@@ -10,10 +10,13 @@ import {
   getAllPropertiesByAgent,
   getAllPropertiesSoldByAgent,
   authorizeProperty,
+  getAllSearchedProperties,
 } from '../controllers/property';
 import { getUserById } from '../controllers/user';
 import { requiredAuth, requiredRole } from '../middleware/auth';
+import { query } from '../middleware/query';
 import catchError from '../utils/catchError';
+import Property from '../models/Property';
 
 const route = express.Router();
 
@@ -29,7 +32,9 @@ route.param('userId', getUserById);
 route
   .route('/')
   .post(requiredAuth, requiredRole('agent', 'admin'), catchError(addProperty))
-  .get(catchError(getAllProperties));
+  .get(query(Property, 'reviews'), catchError(getAllProperties));
+
+route.get('/search/:keywords', catchError(getAllSearchedProperties));
 
 // @route /api/property/:id
 // @method GET

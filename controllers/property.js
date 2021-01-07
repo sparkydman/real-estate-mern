@@ -65,11 +65,47 @@ export const getPropertyById = async (req, res, next, id) => {
 // Get all properties
 // authorization public
 export const getAllProperties = async (req, res) => {
-  const properties = await Property.find()
-    .sort({ createdAt: 'desc' })
-    .populate('agent', '_id firstname lastname avatar')
-    .populate('purchasedBy.client', '_id firstname lastname avatar')
-    .populate('reviews', '_id text user');
+  res.status(200).json(res.queryResults);
+};
+
+export const getAllSearchedProperties = async (req, res) => {
+  const keywords = req.params.keywords
+    ? {
+        $or: [
+          {
+            title: {
+              $regex: req.params.keywords,
+              $options: 'i',
+            },
+          },
+          {
+            address: {
+              $regex: req.params.keywords,
+              $options: 'i',
+            },
+          },
+          {
+            condition: {
+              $regex: req.params.keywords,
+              $options: 'i',
+            },
+          },
+          {
+            keywords: {
+              $regex: req.params.keywords,
+              $options: 'i',
+            },
+          },
+          {
+            category: {
+              $regex: req.params.keywords,
+              $options: 'i',
+            },
+          },
+        ],
+      }
+    : {};
+  const properties = await Property.find({ ...keywords });
 
   res.status(200).json({
     success: true,

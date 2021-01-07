@@ -98,6 +98,14 @@ const PropertySchema = new mongoose.Schema(
   }
 );
 
+PropertySchema.index({
+  title: 'text',
+  address: 'text',
+  category: 'text',
+  condition: 'text',
+  keywords: 'text',
+});
+
 PropertySchema.virtual('reviews', {
   ref: 'Review',
   localField: '_id',
