@@ -9,6 +9,7 @@ import {
   purchaseProperty,
   getAllPropertiesByAgent,
   getAllPropertiesSoldByAgent,
+  authorizeProperty,
 } from '../controllers/property';
 import { getUserById } from '../controllers/user';
 import { requiredAuth, requiredRole } from '../middleware/auth';
@@ -55,6 +56,7 @@ route.delete(
   '/:propertyId',
   requiredAuth,
   requiredRole('agent', 'admin'),
+  authorizeProperty,
   catchError(deleteProperty)
 );
 
@@ -66,6 +68,7 @@ route.put(
   '/:propertyId/purchase',
   requiredAuth,
   requiredRole('customer'),
+  authorizeProperty,
   catchError(purchaseProperty)
 );
 

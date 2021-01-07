@@ -1,5 +1,8 @@
 import express from 'express';
 import {
+  authenticate,
+  changeEmail,
+  changePassword,
   deleteUser,
   getAllUsers,
   getLoggedUser,
@@ -31,9 +34,21 @@ route.get('/:id', catchError(getSingleUser));
 
 route
   .route('/profile/:userId')
-  .put(requiredAuth, catchError(updateProfile))
-  .delete(requiredAuth, catchError(deleteUser));
+  .put(requiredAuth, authenticate, catchError(updateProfile))
+  .delete(requiredAuth, authenticate, catchError(deleteUser));
 
-route.patch('/:userId', requiredAuth, catchError());
+route.put(
+  '/change-password/:userId',
+  requiredAuth,
+  authenticate,
+  catchError(changePassword)
+);
+
+route.put(
+  '/change-email/:userId',
+  requiredAuth,
+  authenticate,
+  catchError(changeEmail)
+);
 
 export default route;

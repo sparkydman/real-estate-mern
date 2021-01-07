@@ -28,7 +28,7 @@ export const login = async (req, res) => {
     });
   }
   if (!(await user.isPassword(password))) {
-    return res.status(404).json({
+    return res.status(403).json({
       success: false,
       error: new ErrorRes('Invalid email or password', null, 404),
     });
@@ -106,12 +106,6 @@ export const getLoggedUser = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-  if (!req.profile && !(req.user.role === 'admin' || req.isMyProfile)) {
-    return res.status(401).json({
-      success: false,
-      error: new ErrorRes('You are not authorize', null, 401),
-    });
-  }
   if (req.user.role !== 'admin' && req.body.role) {
     return res.status(401).json({
       success: false,
@@ -139,12 +133,62 @@ export const logout = (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  if (!req.profile && !(req.user.role === 'admin' || req.isMyProfile)) {
+  await User.findOneAndDelete({ _id: req.profile._id });
+  logout(req, res);
+};
+
+export const changePassword = async (req, res) => {
+  const user = await User.findOne({ _id: req.profile.id }).select('+password');
+
+  if (!(await user.isPassword(req.body.password))) {
+    return res.status(403).json({
+      success: false,
+      error: new ErrorRes('Password not correct', null, 403),
+    });
+  }
+
+  await user.set({
+    password: req.body.newPassword,
+    confirmPassword: req.body.confirmPassword,
+  });
+  await user.save();
+  logout(req, res);
+};
+
+export const changeEmail = async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (user) {
+    return res.status(403).json({
+      success: false,
+      error: new ErrorRes('Email already exist', null, 403),
+    });
+  }
+
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: req.profile.id },
+    { $set: { email: req.body.email } },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json({
+    success: true,
+    data: updatedUser,
+  });
+};
+
+export const authenticate = (req, res, next) => {
+  if (!req.profile) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Profile not found', null, 404),
+    });
+  }
+  if (req.user.role !== 'admin' && !req.isMyProfile) {
     return res.status(401).json({
       success: false,
       error: new ErrorRes('You are not authorize', null, 401),
     });
   }
-  await User.findOneAndDelete({ _id: req.profile._id });
-  logout(req, res);
+  next();
 };

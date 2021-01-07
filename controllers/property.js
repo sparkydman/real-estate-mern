@@ -102,13 +102,6 @@ export const getSingleProperty = async (req, res) => {
 // Authorization private
 // Role agent(owner) and admin
 export const updateProperty = async (req, res) => {
-  let id;
-  if (!req.property && !(req.user.role === 'admin' || req.isPropertyAgent)) {
-    return res.status(401).json({
-      success: false,
-      error: new ErrorRes('Unauthorized', null, 401),
-    });
-  }
   if (req.user.role !== 'admin' && req.body.enable) {
     return res.status(401).json({
       success: false,
@@ -116,10 +109,8 @@ export const updateProperty = async (req, res) => {
     });
   }
 
-  id = req.property._id;
-
   const property = await Property.findOneAndUpdate(
-    { _id: id },
+    { _id: req.property._id },
     { $set: req.body },
     { runValidators: true, new: true }
   );
@@ -134,16 +125,7 @@ export const updateProperty = async (req, res) => {
 // Authorization private
 // Role agent(owner) and admin
 export const deleteProperty = async (req, res) => {
-  let id;
-  if (!req.property && !(req.user.role === 'admin' || req.isPropertyAgent)) {
-    return res.status(401).json({
-      success: false,
-      error: new ErrorRes('Unauthorized', null, 401),
-    });
-  }
-  id = req.property._id;
-
-  await Property.findOneAndDelete({ _id: id });
+  await Property.findOneAndDelete({ _id: req.property._id });
   res.status(200).json({
     success: true,
     data: 'deleted',
@@ -218,4 +200,20 @@ export const getAllPropertiesSoldByAgent = async (req, res) => {
     count: properties.length,
     data: properties,
   });
+};
+
+export const authorizeProperty = (req, res, next) => {
+  if (!req.property) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Property not found', null, 404),
+    });
+  }
+  if (req.user.role !== 'admin' || !req.isPropertyAgent) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes('Unauthorized', null, 401),
+    });
+  }
+  next();
 };
