@@ -15,6 +15,8 @@ import {
 } from '../controllers/user';
 import { requiredAuth } from '../middleware/auth';
 import catchError from '../utils/catchError';
+import User from '../models/User';
+import { query } from '../middleware/query';
 
 const route = express.Router();
 
@@ -27,7 +29,7 @@ route.param('userId', getUserById);
 route.post('/register', catchError(register));
 route.post('/login', catchError(login));
 
-route.get('/', catchError(getAllUsers));
+route.get('/', query(User), catchError(getAllUsers));
 
 route.get('/profile', requiredAuth, catchError(getLoggedUser));
 route.get('/:id', catchError(getSingleUser));

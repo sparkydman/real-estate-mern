@@ -59,11 +59,7 @@ const sendClientToken = async (user, code, res) => {
 };
 
 export const getAllUsers = async (req, res) => {
-  const users = await User.find();
-  res.status(200).json({
-    success: true,
-    data: users,
-  });
+  res.status(200).json(res.queryResults);
 };
 
 export const getUserById = async (req, res, next, id) => {

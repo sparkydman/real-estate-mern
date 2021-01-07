@@ -62,6 +62,7 @@ const UserShema = new mongoose.Schema(
       enum: ['customer', 'agent', 'admin'],
       default: 'customer',
     },
+    enable: { type: Boolean, enum: [true, false], default: true },
     rating: { type: Number, default: 0 },
     badge: {
       type: String,
