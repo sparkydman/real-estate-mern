@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import property from './routes/property';
 import review from './routes/review';
 import user from './routes/user';
+import dm from './routes/dm';
 
 import errorHandler from './middleware/error';
 import { getme } from './middleware/auth';
@@ -33,6 +34,7 @@ app.use(getme);
 app.use('/api/v1/property', property);
 app.use('/api/v1/user', user);
 app.use('/api/v1/review', review);
+app.use('/api/v1/dm', dm);
 
 app.use(errorHandler);
 

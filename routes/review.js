@@ -4,9 +4,10 @@ import { requiredAuth, requiredRole } from '../middleware/auth';
 import {
   addReview,
   deleteReview,
+  disDikeReview,
   getReviewById,
   getSingleReview,
-  likeAndDislikeReview,
+  likeReview,
   updateReview,
 } from '../controllers/review';
 import { getPropertyById } from '../controllers/property';
@@ -78,10 +79,10 @@ route.delete(
 // @authorization Private
 // @desc Like a review
 route.put(
-  'like/:reviewId',
+  '/like/:reviewId',
   requiredAuth,
   requiredRole('customer'),
-  catchError(likeAndDislikeReview)
+  catchError(likeReview)
 );
 
 // @route /api/review/like:id
@@ -89,10 +90,10 @@ route.put(
 // @authorization Private
 // @desc Dislike a review
 route.put(
-  'dislike/:reviewId',
+  '/dislike/:reviewId',
   requiredAuth,
   requiredRole('customer'),
-  catchError(likeAndDislikeReview)
+  catchError(disDikeReview)
 );
 
 export default route;

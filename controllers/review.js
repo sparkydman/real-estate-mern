@@ -165,7 +165,7 @@ export const deleteReview = async (req, res) => {
   });
 };
 
-export const likeAndDislikeReview = async (req, res) => {
+export const likeReview = async (req, res) => {
   if (!req.review) {
     return res.status(404).json({
       success: false,
@@ -187,6 +187,24 @@ export const likeAndDislikeReview = async (req, res) => {
     }
     await review.likes.push(req.user._id);
   }
+
+  await review.save();
+  return res.status(200).json({
+    success: false,
+    data: review,
+  });
+};
+
+export const disDikeReview = async (req, res) => {
+  if (!req.review) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Review not found', null, 404),
+    });
+  }
+  const isLiked = req.review.likes.includes(req.user._id);
+  const isDisLiked = req.review.dis_likes.includes(req.user._id);
+  const review = await Review.findOne({ _id: req.review._id });
 
   if (req.url.includes('dislike') && isDisLiked) {
     return res.status(409).json({

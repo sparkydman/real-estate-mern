@@ -34,4 +34,6 @@ route
   .put(requiredAuth, catchError(updateProfile))
   .delete(requiredAuth, catchError(deleteUser));
 
+route.patch('/:userId', requiredAuth, catchError());
+
 export default route;

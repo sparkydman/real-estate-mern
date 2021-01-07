@@ -109,6 +109,12 @@ export const updateProperty = async (req, res) => {
       error: new ErrorRes('Unauthorized', null, 401),
     });
   }
+  if (req.user.role !== 'admin' && req.body.enable) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes("You can't enable or disable account ", null, 401),
+    });
+  }
 
   id = req.property._id;
 

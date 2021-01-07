@@ -63,7 +63,7 @@ route.delete(
 // @authorization Private
 // @desc purchase a property by customer
 route.put(
-  '/purchase/:propertyId',
+  '/:propertyId/purchase',
   requiredAuth,
   requiredRole('customer'),
   catchError(purchaseProperty)
@@ -79,6 +79,6 @@ route.get('/agent/:id', catchError(getAllPropertiesByAgent));
 // @method GET
 // @authorization Public
 // @desc Get all sold properties by an agent
-route.get('/agent/sold/:id', catchError(getAllPropertiesSoldByAgent));
+route.get('/agent/:id/sold', catchError(getAllPropertiesSoldByAgent));
 
 export default route;

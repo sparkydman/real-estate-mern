@@ -48,6 +48,7 @@ const PropertySchema = new mongoose.Schema(
       enum: ['new', 'reconstructed', 'old', 'natural'],
       required: [true, 'Condition of the property is required'],
     },
+    enable: { type: Boolean, enum: [true, false], default: false },
     category: {
       type: String,
       enum: [
