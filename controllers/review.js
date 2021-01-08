@@ -1,6 +1,6 @@
-import { Types } from 'mongoose';
-import Review from '../models/Review';
-import ErrorRes from '../utils/ErrorRes';
+import mongoose from 'mongoose';
+import Review from '../models/Review.js';
+import ErrorRes from '../utils/ErrorRes.js';
 
 export const addReview = async (req, res) => {
   req.body.user = req.user.id;
@@ -106,7 +106,7 @@ export const getReviewById = async (req, res, next, id) => {
   const review = await Review.findOne({ _id: id });
   if (review) {
     req.review = review;
-    const posterId = Types.ObjectId(req.review.user._id);
+    const posterId = mongoose.Types.ObjectId(req.review.user._id);
     if (req.user && posterId.equals(req.user._id)) {
       req.isReviewer = true;
       return next();

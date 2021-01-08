@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import config from 'config';
 
 const UserShema = new mongoose.Schema(
   {
@@ -134,8 +133,9 @@ UserShema.methods.isPassword = async function (enterPassword) {
 };
 
 UserShema.methods.getSignedToken = function () {
-  return jwt.sign({ id: this._id }, config.get('JWT_SECRET'), {
-    expiresIn: config.get('JWT_EXPIRATION'),
+  console.log(process.env.JWT_SECRET);
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRATION,
   });
 };
 

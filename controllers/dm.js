@@ -1,6 +1,6 @@
-import Dm from '../models/Dm';
-import ErrorRes from '../utils/ErrorRes';
-import { Types } from 'mongoose';
+import Dm from '../models/Dm.js';
+import ErrorRes from '../utils/ErrorRes.js';
+import mongoose from 'mongoose';
 
 export const postDm = async (req, res) => {
   req.body.from = req.user.id;
@@ -23,7 +23,7 @@ export const getDmById = async (req, res, next, id) => {
     });
   }
   req.dm = dm;
-  const dmFromId = Types.ObjectId(req.dm.from.id);
+  const dmFromId = mongoose.Types.ObjectId(req.dm.from.id);
   if (req.user && dmFromId.equals(req.user.id)) {
     req.isMyMsg = true;
     return next();

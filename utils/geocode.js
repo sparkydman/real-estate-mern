@@ -1,9 +1,11 @@
 import geocoder from 'node-geocoder';
-import config from 'config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const option = {
-  provider: config.get('GEO_CODE_PROVIDER'),
-  apiKey: config.get('GEO_CODE_KEY'),
+  provider: process.env.GEO_CODE_PROVIDER,
+  apiKey: process.env.GEO_CODE_KEY,
   httpAdapter: 'https',
   formatter: null,
 };

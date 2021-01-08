@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec babel-node server.js",
+    "dev": "nodemon server.js",
     "lint": "lint . --ignore-path .gitignore ",
     "lint:quiet": "npm run lint -- -- quiet",
     "lint:fix": "npm run lint -- -- fix",
@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cloudinary": "^1.23.0",
     "config": "^3.3.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -23,13 +24,12 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
     "node-geocoder": "^3.27.0",
-    "slugify": "^1.4.6"
+    "slugify": "^1.4.6",
+    "streamifier": "^0.1.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
     "eslint": "^7.16.0",
     "husky": "^4.3.6"
   },

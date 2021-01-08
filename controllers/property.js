@@ -1,16 +1,23 @@
 import mongoose from 'mongoose';
-import Property from '../models/Property';
-import User from '../models/User';
-import ErrorRes from '../utils/ErrorRes';
+import Property from '../models/Property.js';
+import User from '../models/User.js';
+import ErrorRes from '../utils/ErrorRes.js';
+import {
+  asyncForEach,
+  uploadImgToCloudinary,
+  waitFor,
+} from '../utils/uploadFile.js';
 
 // Create property
 // Authorization private
 // Role Agent and Admin
 export const addProperty = async (req, res) => {
-  req.body.keywords = req.body.keywords
-    .split(',')
-    .map((word) => word.toLowerCase())
-    .join(',');
+  if (req.body.keywords) {
+    req.body.keywords = req.body.keywords
+      .split(',')
+      .map((word) => word.toLowerCase())
+      .join(',');
+  }
   if (req.user.role === 'admin' && !req.body.agent) {
     return res.status(400).json({
       success: false,
@@ -21,15 +28,30 @@ export const addProperty = async (req, res) => {
       ),
     });
   }
+
   if (req.user.role === 'agent') {
     req.body.agent = req.user._id;
   }
-  const property = new Property(req.body);
-  const isTitle = await Property.findOne({ title: property.title });
+
+  const isTitle = await Property.findOne({ title: req.body.title });
   if (isTitle) {
     return res.status(400).json({
       success: false,
       error: new ErrorRes('The title is already registered', 'title', 400),
+    });
+  }
+
+  const property = new Property(req.body);
+  if (req.files.length !== 0) {
+    await asyncForEach(req.files, async (file) => {
+      await waitFor(50);
+      const result = await uploadImgToCloudinary(file, null, 500, 300);
+      property.images.push({
+        url: result.url,
+        size: result.bytes,
+        width: result.width,
+        height: result.height,
+      });
     });
   }
 

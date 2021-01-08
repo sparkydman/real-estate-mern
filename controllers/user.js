@@ -1,7 +1,6 @@
-import { Types } from 'mongoose';
-import User from '../models/User';
-import ErrorRes from '../utils/ErrorRes';
-import config from 'config';
+import mongoose from 'mongoose';
+import User from '../models/User.js';
+import ErrorRes from '../utils/ErrorRes.js';
 
 export const register = async (req, res) => {
   const user = new User(req.body);
@@ -43,7 +42,7 @@ const sendClientToken = async (user, code, res) => {
 
   const option = {
     expires: new Date(
-      Date.now() + config.get('JWT_EXPIRATION') * 24 * 60 * 60 * 1000
+      Date.now() + process.env.JWT_EXPIRATION * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
   };
@@ -98,7 +97,7 @@ export const getUserById = async (req, res, next, id) => {
     });
   }
   req.profile = user;
-  const profileId = Types.ObjectId(req.profile._id);
+  const profileId = mongoose.Types.ObjectId(req.profile._id);
   if (req.user && req.user._id.equals(profileId)) {
     req.isMyProfile = true;
     return next();

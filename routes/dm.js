@@ -1,12 +1,12 @@
 import express from 'express';
-import catchError from '../utils/catchError';
-import { requiredAuth } from '../middleware/auth';
+import catchError from '../utils/catchError.js';
+import { requiredAuth } from '../middleware/auth.js';
 import {
   deleteDm,
   getAllDmToAndFrom,
   getDmById,
   postDm,
-} from '../controllers/dm';
+} from '../controllers/dm.js';
 
 const route = express.Router();
 

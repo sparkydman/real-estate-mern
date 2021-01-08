@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import slugity from 'slugify';
-import geocode from '../utils/geocode';
+import geocode from '../utils/geocode.js';
 
 const { ObjectId } = mongoose.Schema;
 
@@ -68,8 +68,8 @@ const PropertySchema = new mongoose.Schema(
     compound_space: String,
     property_size: String,
     quantity: Number,
-    imges: [{ type: String, size: Number }],
-    desccription: {
+    images: [{ url: String, size: Number, width: Number, height: Number }],
+    description: {
       type: String,
       maxlength: [
         500,

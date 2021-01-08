@@ -1,4 +1,4 @@
-import ErrorRes from '../utils/ErrorRes';
+import ErrorRes from '../utils/ErrorRes.js';
 
 const errorHandler = (err, req, res, next) => {
   console.log(err);

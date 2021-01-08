@@ -1,6 +1,6 @@
 import express from 'express';
-import catchError from '../utils/catchError';
-import { requiredAuth, requiredRole } from '../middleware/auth';
+import catchError from '../utils/catchError.js';
+import { requiredAuth, requiredRole } from '../middleware/auth.js';
 import {
   addReview,
   deleteReview,
@@ -9,9 +9,9 @@ import {
   getSingleReview,
   likeReview,
   updateReview,
-} from '../controllers/review';
-import { getPropertyById } from '../controllers/property';
-import { getUserById } from '../controllers/user';
+} from '../controllers/review.js';
+import { getPropertyById } from '../controllers/property.js';
+import { getUserById } from '../controllers/user.js';
 
 const route = express.Router();
 
@@ -42,7 +42,7 @@ route.post(
 // @method GET
 // @authorization Public
 // @desc Get all properties
-route.get('/', (req, res) => {
+route.get('/test', (req, res) => {
   res.send('get all properties');
 });
 

@@ -1,18 +1,21 @@
 import express from 'express';
-import config from 'config';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import dotenv from 'dotenv';
 
-import property from './routes/property';
-import review from './routes/review';
-import user from './routes/user';
-import dm from './routes/dm';
+import property from './routes/property.js';
+import review from './routes/review.js';
+import user from './routes/user.js';
+import dm from './routes/dm.js';
 
-import errorHandler from './middleware/error';
-import { getme } from './middleware/auth';
+import errorHandler from './middleware/error.js';
+import { getme } from './middleware/auth.js';
+
+dotenv.config();
+
 // connect to db
 mongoose
-  .connect(config.get('MONGO_URI'), {
+  .connect(process.env.MONGO_URI, {
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -38,7 +41,7 @@ app.use('/api/v1/dm', dm);
 
 app.use(errorHandler);
 
-const PORT = config.get('PORT') || 5500;
+const PORT = process.env.PORT || 5500;
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);

@@ -13,11 +13,11 @@ import {
   logout,
   register,
   updateProfile,
-} from '../controllers/user';
-import { requiredAuth } from '../middleware/auth';
-import catchError from '../utils/catchError';
-import User from '../models/User';
-import { query } from '../middleware/query';
+} from '../controllers/user.js';
+import { requiredAuth } from '../middleware/auth.js';
+import catchError from '../utils/catchError.js';
+import User from '../models/User.js';
+import { query } from '../middleware/query.js';
 
 const route = express.Router();
 

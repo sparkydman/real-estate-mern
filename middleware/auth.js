@@ -1,7 +1,6 @@
-import ErrorRes from '../utils/ErrorRes';
+import ErrorRes from '../utils/ErrorRes.js';
 import jwt from 'jsonwebtoken';
-import config from 'config';
-import User from '../models/User';
+import User from '../models/User.js';
 
 export const requiredAuth = async (req, res, next) => {
   let token = req.headers['authorization'];
@@ -14,7 +13,7 @@ export const requiredAuth = async (req, res, next) => {
   token = token.split(' ')[1];
 
   try {
-    const decode = jwt.verify(token, config.get('JWT_SECRET'));
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findOne({ _id: decode.id });
 
@@ -43,7 +42,7 @@ export const getme = async (req, res, next) => {
   }
   try {
     token = token.split(' ')[1];
-    const decode = jwt.verify(token, config.get('JWT_SECRET'));
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findOne({ _id: decode.id });
     req.user = user;
