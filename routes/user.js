@@ -18,6 +18,7 @@ import { requiredAuth } from '../middleware/auth.js';
 import catchError from '../utils/catchError.js';
 import User from '../models/User.js';
 import { query } from '../middleware/query.js';
+import { uploadAvatar } from '../middleware/uploadFile.js';
 
 const route = express.Router();
 
@@ -27,7 +28,7 @@ route.get('/logout', logout);
 
 route.param('userId', getUserById);
 
-route.post('/register', catchError(register));
+route.post('/register', uploadAvatar, catchError(register));
 route.post('/login', catchError(login));
 
 route.get('/', query(User), catchError(getAllUsers));
@@ -38,7 +39,7 @@ route.get('/:id', catchError(getSingleUser));
 
 route
   .route('/profile/:userId')
-  .put(requiredAuth, authenticate, catchError(updateProfile))
+  .put(requiredAuth, authenticate, uploadAvatar, catchError(updateProfile))
   .delete(requiredAuth, authenticate, catchError(deleteUser));
 
 route.put(

@@ -37,3 +37,15 @@ export const asyncForEach = async (array, callback) => {
     await callback(array[index], index, array);
   }
 };
+
+export const destroyImage = async (img_url) => {
+  let img_public_id = '';
+  const imgSplit = img_url.split('/');
+  img_public_id = imgSplit[imgSplit.length - 1].split('.')[0];
+
+  await waitFor(50);
+  await cloudinary.uploader.destroy(img_public_id, (error, result) => {
+    if (result) console.log(result);
+    if (error) console.log(error);
+  });
+};

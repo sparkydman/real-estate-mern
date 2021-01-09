@@ -2,7 +2,8 @@ import express from 'express';
 import catchError from '../utils/catchError.js';
 import { requiredAuth, requiredRole } from '../middleware/auth.js';
 import {
-  addReview,
+  addAgentReview,
+  addPropertyReview,
   deleteReview,
   disDikeReview,
   getReviewById,
@@ -29,13 +30,13 @@ route.post(
   '/property/:propertyId',
   requiredAuth,
   requiredRole('customer'),
-  catchError(addReview)
+  catchError(addPropertyReview)
 );
 route.post(
   '/agent/:userId',
   requiredAuth,
   requiredRole('customer'),
-  catchError(addReview)
+  catchError(addAgentReview)
 );
 
 // @route /api/review/

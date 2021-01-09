@@ -1,7 +1,7 @@
 import multer from 'multer';
 
-export const uploadGallery = multer({
-  limits: 1024 * 1024 * 2,
+const uploadProcess = {
+  limits: 1024 * 1024 * 1,
   fileFilter: (req, file, next) => {
     if (file.mimetype.startsWith('image/')) {
       next(null, true);
@@ -9,4 +9,12 @@ export const uploadGallery = multer({
       next(null, false);
     }
   },
+};
+
+export const uploadGallery = multer({
+  uploadProcess,
 }).array('images', 10);
+
+export const uploadAvatar = multer({
+  uploadProcess,
+}).single('avatar');

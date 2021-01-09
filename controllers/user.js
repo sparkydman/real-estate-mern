@@ -1,10 +1,15 @@
 import mongoose from 'mongoose';
 import User from '../models/User.js';
 import ErrorRes from '../utils/ErrorRes.js';
+import { destroyImage, uploadImgToCloudinary } from '../utils/uploadFile.js';
 
 export const register = async (req, res) => {
   const user = new User(req.body);
   user.role = 'customer';
+  if (req.file) {
+    const result = await uploadImgToCloudinary(req.file, null, 100, 100);
+    user.avatar = result.url;
+  }
   await user.save();
   req.user = user;
   sendClientToken(user, 200, res);
@@ -98,8 +103,11 @@ export const getUserById = async (req, res, next, id) => {
   }
   req.profile = user;
   const profileId = mongoose.Types.ObjectId(req.profile._id);
-  if (req.user && req.user._id.equals(profileId)) {
-    req.isMyProfile = true;
+  if (req.user && req.user._id !== undefined) {
+    if (req.user._id.equals(profileId)) {
+      req.isMyProfile = true;
+      return next();
+    }
     return next();
   }
 
@@ -134,6 +142,10 @@ export const updateProfile = async (req, res) => {
       error: new ErrorRes('Role is asigned by the admin', null, 401),
     });
   }
+  if (req.file) {
+    const result = await uploadImgToCloudinary(req.file, null, 100, 100);
+    req.body.avatar = result.url;
+  }
   const user = await User.findOneAndUpdate(
     { _id: req.profile._id },
     { $set: req.body },
@@ -155,7 +167,8 @@ export const logout = (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  await User.findOneAndDelete({ _id: req.profile._id });
+  const user = await User.findOneAndDelete({ _id: req.profile._id });
+  destroyImage(user.avatar);
   logout(req, res);
 };
 

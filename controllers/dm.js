@@ -24,8 +24,11 @@ export const getDmById = async (req, res, next, id) => {
   }
   req.dm = dm;
   const dmFromId = mongoose.Types.ObjectId(req.dm.from.id);
-  if (req.user && dmFromId.equals(req.user.id)) {
-    req.isMyMsg = true;
+  if (req.user && req.user._id !== undefined) {
+    if (dmFromId.equals(req.user.id)) {
+      req.isMyMsg = true;
+      return next();
+    }
     return next();
   }
   next();

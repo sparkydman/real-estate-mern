@@ -4,6 +4,7 @@ import User from '../models/User.js';
 import ErrorRes from '../utils/ErrorRes.js';
 import {
   asyncForEach,
+  destroyImage,
   uploadImgToCloudinary,
   waitFor,
 } from '../utils/uploadFile.js';
@@ -77,8 +78,11 @@ export const getPropertyById = async (req, res, next, id) => {
   }
   req.property = property;
   const agentId = mongoose.Types.ObjectId(req.property.agent._id);
-  if (req.user && req.user._id.equals(agentId)) {
-    req.isPropertyAgent = true;
+  if (req.user && req.user._id !== undefined) {
+    if (req.user._id.equals(agentId)) {
+      req.isPropertyAgent = true;
+      return next();
+    }
     return next();
   }
   next();
@@ -86,9 +90,8 @@ export const getPropertyById = async (req, res, next, id) => {
 
 // Get all properties
 // authorization public
-export const getAllProperties = async (req, res) => {
+export const getAllProperties = async (req, res) =>
   res.status(200).json(res.queryResults);
-};
 
 export const getAllSearchedProperties = async (req, res) => {
   const keywords = req.params.keywords
@@ -167,7 +170,22 @@ export const updateProperty = async (req, res) => {
     });
   }
 
-  const property = await Property.findOneAndUpdate(
+  req.body.images = [];
+
+  if (req.files.length !== 0) {
+    await asyncForEach(req.files, async (file) => {
+      await waitFor(50);
+      const result = await uploadImgToCloudinary(file, null, 500, 300);
+      req.body.images.push({
+        url: result.url,
+        size: result.bytes,
+        width: result.width,
+        height: result.height,
+      });
+    });
+  }
+
+  const property = await Property.findOne(
     { _id: req.property._id },
     { $set: req.body },
     { runValidators: true, new: true }
@@ -179,11 +197,35 @@ export const updateProperty = async (req, res) => {
   });
 };
 
+export const deleteImg = async (req, res) => {
+  const property = await Property.findOneAndUpdate(
+    { _id: req.property.id },
+    { $pull: { images: { _id: req.body.img } } },
+    { new: true }
+  );
+
+  const imgIndex = property.images.map((img) => img._id).indexOf(req.body.img);
+
+  destroyImage(property.images[imgIndex].url);
+
+  res.status(200).json({
+    success: true,
+    data: property,
+  });
+};
+
 // Delete property
 // Authorization private
 // Role agent(owner) and admin
 export const deleteProperty = async (req, res) => {
-  await Property.findOneAndDelete({ _id: req.property._id });
+  const property = await Property.findOneAndDelete({ _id: req.property._id });
+
+  // delete images of the property
+  if (property.images !== 0) {
+    await asyncForEach(property.images, async (file) => {
+      destroyImage(file);
+    });
+  }
   res.status(200).json({
     success: true,
     data: 'deleted',
@@ -267,7 +309,7 @@ export const authorizeProperty = (req, res, next) => {
       error: new ErrorRes('Property not found', null, 404),
     });
   }
-  if (req.user.role !== 'admin' || !req.isPropertyAgent) {
+  if (req.user.role !== 'admin' && !req.isPropertyAgent) {
     return res.status(401).json({
       success: false,
       error: new ErrorRes('Unauthorized', null, 401),

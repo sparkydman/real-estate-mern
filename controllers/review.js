@@ -2,98 +2,104 @@ import mongoose from 'mongoose';
 import Review from '../models/Review.js';
 import ErrorRes from '../utils/ErrorRes.js';
 
-export const addReview = async (req, res) => {
+export const addPropertyReview = async (req, res) => {
   req.body.user = req.user.id;
-  let type;
-  if (req.url.includes('property')) {
-    type = 'property';
-    if (!req.property) {
-      return res.status(404).json({
-        success: false,
-        error: new ErrorRes('Property not found', null, 404),
-      });
-    }
-    const indexOfClient = req.property.purchasedBy
-      .map(({ client }) => client.id)
-      .indexOf(req.user.id);
-    if (indexOfClient === -1) {
-      return res.status(401).json({
-        success: false,
-        error: new ErrorRes(
-          'You are not authorized to review this property, since you do not purchase it',
-          null,
-          401
-        ),
-      });
-    }
-    const reviewCount = req.property.reviews
-      .map((r) => r.user.id)
-      .indexOf(req.user.id);
-    if (reviewCount !== -1) {
-      return res.status(401).json({
-        success: false,
-        error: new ErrorRes(
-          'You have you have reviewed this property before, Thank you!',
-          null,
-          401
-        ),
-      });
-    }
-    req.body.property = req.property.id;
+
+  if (!req.property) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Property not found', null, 404),
+    });
   }
-
-  if (req.url.includes('agent')) {
-    type = 'agent';
-    if (!req.profile && req.profile.role !== 'agent') {
-      return res.status(404).json({
-        success: false,
-        error: new ErrorRes('Agent not found', null, 404),
-      });
-    }
-
-    let wasPartner = false;
-    for (let i = 0; i < req.profile.properties.length; i++) {
-      for (let j = 0; j < req.profile.properties[i].purchasedBy.length; j++) {
-        if (
-          req.profile.properties[i].purchasedBy[j].client.toString() ===
-          req.user.id
-        ) {
-          wasPartner = true;
-        }
-      }
-    }
-
-    if (!wasPartner) {
-      return res.status(401).json({
-        success: false,
-        error: new ErrorRes(
-          'You have not done anything directly with this agent',
-          null,
-          401
-        ),
-      });
-    }
-
-    const reviewCount = req.profile.reviews.filter(
-      (rev) => rev.user.id === req.user.id
-    ).length;
-
-    if (reviewCount >= 1) {
-      return res.status(401).json({
-        success: false,
-        error: new ErrorRes(
-          'You have you have reviewed this agent before, Thank you!',
-          null,
-          401
-        ),
-      });
-    }
-    req.body.agent = req.profile.id;
+  const indexOfClient = req.property.purchasedBy
+    .map(({ client }) => client.id)
+    .indexOf(req.user.id);
+  if (indexOfClient === -1) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes(
+        'You are not authorized to review this property, since you do not purchase it',
+        null,
+        401
+      ),
+    });
   }
+  const reviewCount = req.property.reviews
+    .map((r) => r.user.id)
+    .indexOf(req.user.id);
+  if (reviewCount !== -1) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes(
+        'You have you have reviewed this property before, Thank you!',
+        null,
+        401
+      ),
+    });
+  }
+  req.body.property = req.property.id;
 
   const review = new Review(req.body);
-  if (type === 'property') review.agent = undefined;
-  if (type === 'agent') review.property = undefined;
+  review.agent = undefined;
+
+  await review.save();
+  res.status(200).json({
+    success: true,
+    data: review,
+  });
+};
+
+export const addAgentReview = async (req, res) => {
+  req.body.user = req.user.id;
+
+  if (req.profile.role !== undefined && req.profile.role !== 'agent') {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Agent not found', null, 404),
+    });
+  }
+
+  let wasPartner = false;
+  for (let i = 0; i < req.profile.properties.length; i++) {
+    for (let j = 0; j < req.profile.properties[i].purchasedBy.length; j++) {
+      if (
+        req.profile.properties[i].purchasedBy[j].client.toString() ===
+        req.user.id
+      ) {
+        wasPartner = true;
+      }
+    }
+  }
+
+  if (!wasPartner) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes(
+        'You have not done anything directly with this agent',
+        null,
+        401
+      ),
+    });
+  }
+
+  const reviewCount = req.profile.reviews.filter(
+    (rev) => rev.user.id === req.user.id
+  ).length;
+
+  if (reviewCount >= 1) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes(
+        'You have you have reviewed this agent before, Thank you!',
+        null,
+        401
+      ),
+    });
+  }
+  req.body.agent = req.profile.id;
+
+  const review = new Review(req.body);
+  review.property = undefined;
 
   await review.save();
   res.status(200).json({
@@ -107,8 +113,11 @@ export const getReviewById = async (req, res, next, id) => {
   if (review) {
     req.review = review;
     const posterId = mongoose.Types.ObjectId(req.review.user._id);
-    if (req.user && posterId.equals(req.user._id)) {
-      req.isReviewer = true;
+    if (req.user && req.user._id !== undefined) {
+      if (posterId.equals(req.user._id)) {
+        req.isReviewer = true;
+        return next();
+      }
       return next();
     }
   }

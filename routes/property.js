@@ -11,6 +11,7 @@ import {
   getAllPropertiesSoldByAgent,
   authorizeProperty,
   getAllSearchedProperties,
+  deleteImg,
 } from '../controllers/property.js';
 import { getUserById } from '../controllers/user.js';
 import { requiredAuth, requiredRole } from '../middleware/auth.js';
@@ -56,6 +57,8 @@ route.put(
   '/:propertyId',
   requiredAuth,
   requiredRole('agent', 'admin'),
+  authorizeProperty,
+  uploadGallery,
   catchError(updateProperty)
 );
 
@@ -79,7 +82,6 @@ route.put(
   '/:propertyId/purchase',
   requiredAuth,
   requiredRole('customer'),
-  authorizeProperty,
   catchError(purchaseProperty)
 );
 
@@ -94,5 +96,13 @@ route.get('/agent/:id', catchError(getAllPropertiesByAgent));
 // @authorization Public
 // @desc Get all sold properties by an agent
 route.get('/agent/:id/sold', catchError(getAllPropertiesSoldByAgent));
+
+route.put(
+  '/delete-image/:propertyId',
+  requiredAuth,
+  requiredRole('admin', 'agent'),
+  authorizeProperty,
+  catchError(deleteImg)
+);
 
 export default route;
