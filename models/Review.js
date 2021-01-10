@@ -24,7 +24,7 @@ const ReviewShema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now() },
 });
 
-ReviewShema.index({ agent: 1, property: 1 }, { unique: true });
+// ReviewShema.index({ agent: 1, property: 1 }, { unique: true });
 
 const pupolateUser = function (next) {
   this.populate('user', '_id firstname lastname avatar');

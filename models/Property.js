@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import slugity from 'slugify';
 import geocode from '../utils/geocode.js';
+import { destroyImage } from '../utils/uploadFile.js';
 
 const { ObjectId } = mongoose.Schema;
 
@@ -89,7 +90,6 @@ const PropertySchema = new mongoose.Schema(
     ],
     keywords: { type: String },
     sold: { type: Boolean, default: false },
-    // reviews: [{ type: ObjectId, ref: 'Review' }],
     createdAt: { type: Date, default: Date.now() },
   },
   {
@@ -116,6 +116,11 @@ PropertySchema.virtual('reviews', {
 // slugify the tiitle
 PropertySchema.pre('save', function (next) {
   this.slug = slugity(this.title, { lower: true });
+  next();
+});
+PropertySchema.pre('remove', function (next) {
+  this.images.forEach(({ url }) => destroyImage(url));
+  this.model('Review').deleteMany({ property: this._id });
   next();
 });
 

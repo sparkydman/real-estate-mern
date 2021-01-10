@@ -1,12 +1,9 @@
 import { v2 as cloudinary } from 'cloudinary';
 import streamifier from 'streamifier';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const uploadImgToCloudinary = (file, prev_img, width, height) => {
-  cloudinary.config({
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
-    cloud_name: process.env.CLOUD_NAME,
-  });
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {

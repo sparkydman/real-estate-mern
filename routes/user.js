@@ -4,6 +4,7 @@ import {
   changeEmail,
   changePassword,
   deleteUser,
+  forgotPassword,
   getAllSearchedUsers,
   getAllUsers,
   getLoggedUser,
@@ -12,6 +13,7 @@ import {
   login,
   logout,
   register,
+  resetPassword,
   updateProfile,
 } from '../controllers/user.js';
 import { requiredAuth } from '../middleware/auth.js';
@@ -55,5 +57,8 @@ route.put(
   authenticate,
   catchError(changeEmail)
 );
+
+route.post('/forgot-password', catchError(forgotPassword));
+route.put('/forgot-password/:token', catchError(resetPassword));
 
 export default route;

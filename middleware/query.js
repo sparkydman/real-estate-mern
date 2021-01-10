@@ -17,8 +17,22 @@ export const query = (model, populate) => async (req, res, next) => {
     (match) => `$${match}`
   );
 
+  const queryOption = {};
+  if (req.user && req.user.role === 'admin') {
+    queryOption.$or = [
+      {
+        enable: true,
+      },
+      {
+        enable: false,
+      },
+    ];
+  } else {
+    queryOption.enable = true;
+  }
+
   //   Find resource
-  query = model.find(JSON.parse(queryString));
+  query = model.find({ ...queryOption, ...JSON.parse(queryString) });
 
   //   Handle selecting; query some specific fields
   if (req.query.select) {

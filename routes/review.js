@@ -4,6 +4,7 @@ import { requiredAuth, requiredRole } from '../middleware/auth.js';
 import {
   addAgentReview,
   addPropertyReview,
+  authorizeReview,
   deleteReview,
   disDikeReview,
   getReviewById,
@@ -61,6 +62,7 @@ route.put(
   '/:reviewId',
   requiredAuth,
   requiredRole('customer', 'admin'),
+  authorizeReview,
   catchError(updateReview)
 );
 
@@ -72,6 +74,7 @@ route.delete(
   '/:reviewId',
   requiredAuth,
   requiredRole('customer', 'admin'),
+  authorizeReview,
   catchError(deleteReview)
 );
 

@@ -1,11 +1,29 @@
 import Dm from '../models/Dm.js';
+import User from '../models/User.js';
 import ErrorRes from '../utils/ErrorRes.js';
 import mongoose from 'mongoose';
 
 export const postDm = async (req, res) => {
   req.body.from = req.user.id;
-  req.body.to = req.params.to;
-  const dm = new Dm(req.body);
+  const user = await User.findOne({ _id: req.params.to }).select(
+    'firstname lastname avatar'
+  );
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('User not found', null, 404),
+    });
+  }
+  req.body.to = {
+    user: user._id,
+    avatar: user.avatar,
+    firstname: user.firstname,
+    lastname: user.lastname,
+  };
+
+  const { to, from, text } = req.body;
+
+  const dm = new Dm({ to, from, text });
 
   await dm.save();
   res.status(200).json({

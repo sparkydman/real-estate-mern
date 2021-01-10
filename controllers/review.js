@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Review from '../models/Review.js';
 import ErrorRes from '../utils/ErrorRes.js';
+import { mailHandler } from '../utils/mail.js';
 
 export const addPropertyReview = async (req, res) => {
   req.body.user = req.user.id;
@@ -137,20 +138,12 @@ export const getSingleReview = async (req, res) => {
 };
 
 export const updateReview = async (req, res) => {
-  let id;
-  if (!req.review && !(req.user.sole === 'admin' || req.isReviewer)) {
-    return res.status(401).json({
-      success: false,
-      error: new ErrorRes('Unauthorized', null, 401),
-    });
-  }
-  id = req.review.id;
-
   const review = await Review.findOneAndUpdate(
-    { _id: id },
+    { _id: req.review.id },
     { $set: { text: req.body.text } },
     { new: true, runValidators: true }
   );
+
   res.status(200).json({
     success: true,
     data: review,
@@ -158,16 +151,17 @@ export const updateReview = async (req, res) => {
 };
 
 export const deleteReview = async (req, res) => {
-  let id;
-  if (!req.review && !(req.user.sole === 'admin' || req.isReviewer)) {
-    return res.status(404).json({
-      success: false,
-      error: new ErrorRes('Unauthorized', null, 404),
-    });
-  }
-  id = req.review.id;
+  const review = await Review.findOneAndDelete({ _id: req.review.id });
 
-  await Review.findOneAndDelete({ _id: id });
+  if (req.user.role === 'admin') {
+    const mailBody = {
+      from: process.env.FROM_NAME,
+      to: req.review.user.email,
+      subject: 'Review delete',
+      html: `<div style="text-align:center"><p><strong>${req.review.user.firstname} ${req.review.user.lastname} </strong> your review ${review.text} was deleted due to some of it's content violet our <a href='${process.env.WEBSITE_URL}/policies' target='_black'>policies </a> </p></div>`,
+    };
+    mailHandler(mailBody);
+  }
   res.status(200).json({
     success: true,
     data: 'Review deleted',
@@ -185,7 +179,7 @@ export const likeReview = async (req, res) => {
   const isDisLiked = req.review.dis_likes.includes(req.user._id);
   const review = await Review.findOne({ _id: req.review._id });
 
-  if (req.url.includes('like') && isLiked) {
+  if (isLiked) {
     return res.status(409).json({
       success: false,
       error: new ErrorRes('You already liked this review'),
@@ -215,7 +209,7 @@ export const disDikeReview = async (req, res) => {
   const isDisLiked = req.review.dis_likes.includes(req.user._id);
   const review = await Review.findOne({ _id: req.review._id });
 
-  if (req.url.includes('dislike') && isDisLiked) {
+  if (isDisLiked) {
     return res.status(409).json({
       success: false,
       error: new ErrorRes('You already disliked this review'),
@@ -232,4 +226,20 @@ export const disDikeReview = async (req, res) => {
     success: false,
     data: review,
   });
+};
+
+export const authorizeReview = (req, res, next) => {
+  if (!req.review) {
+    return res.status(404).json({
+      success: false,
+      error: new ErrorRes('Review not found', null, 404),
+    });
+  }
+  if (!req.user.sole !== 'admin' && !req.isReviewer) {
+    return res.status(401).json({
+      success: false,
+      error: new ErrorRes('Unauthorized', null, 401),
+    });
+  }
+  next();
 };

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const UserShema = new mongoose.Schema(
   {
@@ -70,6 +71,8 @@ const UserShema = new mongoose.Schema(
     },
     bio: { Type: String },
     createdAt: { type: Date, default: Date.now() },
+    resetPasswordToken: String,
+    resetPasswordTokenExpire: Date,
   },
   {
     toJSON: { virtuals: true },
@@ -82,7 +85,6 @@ UserShema.pre('save', function (next) {
     (this.isModified('role') && this.role !== 'agent') ||
     this.role !== 'agent'
   ) {
-    this.reviews = undefined;
     this.rating = undefined;
     this.badge = undefined;
     this.properties = undefined;
@@ -118,7 +120,7 @@ UserShema.index({ firstname: 'text', lastname: 'text' });
 
 const autoPoputlateReviewAndProperties = function (next) {
   this.populate('reviews', '_id text user');
-  this.populate('properties', '_id title, purchasedBy');
+  this.populate('properties', '_id title images purchasedBy');
   next();
 };
 
@@ -133,10 +135,28 @@ UserShema.methods.isPassword = async function (enterPassword) {
 };
 
 UserShema.methods.getSignedToken = function () {
-  console.log(process.env.JWT_SECRET);
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRATION,
   });
 };
+
+UserShema.methods.setResetPassword = function () {
+  // Create the token
+  const resetToken = crypto.randomBytes(20).toString('hex');
+  // Hash the password and save to resetPassword field
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  // Set expiration to 10 minute
+  this.resetPasswordTokenExpire = Date.now() + 10 * 60 * 1000;
+  return resetToken;
+};
+
+UserShema.pre('remove', async function (next) {
+  await this.model('Review').deleteMany({ agent: this._id });
+  await this.model('Property').deleteMany({ agent: this._id });
+  next();
+});
 
 export default mongoose.model('User', UserShema);

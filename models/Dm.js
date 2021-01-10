@@ -13,20 +13,15 @@ const DmShechema = new mongoose.Schema({
     ref: 'User',
   },
   to: {
-    type: ObjectId,
-    ref: 'User',
+    user: String,
+    avatar: String,
+    firstname: String,
+    lastname: String,
   },
   createdAt: {
     type: Date,
     default: Date.now(),
   },
 });
-
-const autoPopulateUser = function (next) {
-  this.populate('to', '_id firstname lastname avatar');
-  next();
-};
-
-DmShechema.pre('find', autoPopulateUser);
 
 export default mongoose.model('Dm', DmShechema);
