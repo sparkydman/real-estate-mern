@@ -5,11 +5,13 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
     "lint": "lint . --ignore-path .gitignore ",
     "lint:quiet": "npm run lint -- -- quiet",
     "lint:fix": "npm run lint -- -- fix",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "Chigozie Ugwuede",
@@ -31,6 +33,7 @@
     "streamifier": "^0.1.1"
   },
   "devDependencies": {
+    "concurrently": "^5.3.0",
     "eslint": "^7.16.0",
     "husky": "^4.3.6"
   },

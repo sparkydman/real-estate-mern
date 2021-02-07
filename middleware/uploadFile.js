@@ -13,7 +13,7 @@ const uploadProcess = {
 
 export const uploadGallery = multer({
   uploadProcess,
-}).array('images', 10);
+}).array('images', 20);
 
 export const uploadAvatar = multer({
   uploadProcess,

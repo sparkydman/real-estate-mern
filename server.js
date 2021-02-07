@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import path from 'path';
 
 import property from './routes/property.js';
 import review from './routes/review.js';
@@ -27,6 +29,8 @@ mongoose
 //initialize express
 const app = express();
 
+app.use(cors());
+
 // add express json middleware
 app.use(express.json());
 
@@ -40,6 +44,15 @@ app.use('/api/v1/review', review);
 app.use('/api/v1/dm', dm);
 
 app.use(errorHandler);
+
+// server static assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('frontend/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+  });
+}
 
 const PORT = process.env.PORT || 5500;
 

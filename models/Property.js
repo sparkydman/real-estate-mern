@@ -54,7 +54,7 @@ const PropertySchema = new mongoose.Schema(
       type: String,
       enum: [
         'duplex',
-        'bowngalow',
+        'bungalow',
         'flat',
         'self - contain',
         'room',
@@ -70,6 +70,7 @@ const PropertySchema = new mongoose.Schema(
     property_size: String,
     quantity: Number,
     images: [{ url: String, size: Number, width: Number, height: Number }],
+    cover: { url: String, size: Number, width: Number, height: Number },
     description: {
       type: String,
       maxlength: [

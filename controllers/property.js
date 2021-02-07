@@ -64,6 +64,7 @@ export const addProperty = async (req, res) => {
         height: result.height,
       });
     });
+    property.cover = property.images[0];
   }
 
   await property.save();
