@@ -1,0 +1,82 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.main__container {
+  width: 80%;
+  margin: 20px auto;
+  font-family: 'Kanit', sans-serif;
+  color: #454a4d;
+  font: 18px;
+  display: flex;
+  flex-direction: column;
+}
+.property__top {
+  flex: 1;
+  display: flex;
+  padding: 0 15px;
+}
+.img__div {
+  position: relative;
+}
+.img__div span {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: #5dd95d;
+}
+.info__container {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.address,
+.marketer {
+  padding: 5px 0;
+}
+.agents > ul {
+  list-style: none;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  margin: 10px 0;
+}
+.agents > ul > li {
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.03), -5px -5px 3px rgba(0, 0, 0, 0.03);
+  width: 200px;
+}
+.agent__avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: 0 auto;
+}
+.agents > ul > li > div > p {
+  padding: 5px;
+  font-size: 0.8em;
+  text-align: center;
+}
+.property_map {
+  width: 100%;
+}
+
+@media (max-width: 1028px) {
+  .main__container {
+    width: 100%;
+  }
+  .property__top {
+    flex-direction: column;
+  }
+  .img__div {
+    width: 100%;
+  }
+  .img__div img {
+    width: 100%;
+  }
+}

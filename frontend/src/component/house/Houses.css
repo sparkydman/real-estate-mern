@@ -1,0 +1,401 @@
+:root {
+  --primary: #5dd95d;
+}
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 8px;
+  background-image: url('https://real-estate-space.herokuapp.com/house.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  text-align: center;
+  width: 100%;
+  height: 400px;
+  box-shadow: inset 0 6em 5em rgb(255, 255, 255), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+header h1 {
+  font-size: 2.5em;
+  font-family: 'Itim', cursive;
+  color: var(--primary);
+  padding: 1em 0;
+}
+header button {
+  display: none;
+}
+.search__container {
+  width: 50%;
+  margin: 0 auto;
+  position: relative;
+}
+.form__control {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 2em 2em rgba(255, 255, 255, 0.7),
+    0 -2em 2em rgba(255, 255, 255, 0.7);
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+.search__icon {
+  color: #c2bfbf;
+  padding: 10px;
+  font-size: 1.5em;
+}
+.form__control input {
+  width: 100%;
+  height: 90%;
+  padding: 15px 10px;
+  border: 0;
+  outline: 0;
+  font-size: 18px;
+  color: #454a4d;
+  font-family: 'Itim', cursive;
+  flex: 1;
+}
+.search__container > ul {
+  list-style: none;
+  margin-top: 3px;
+  background-color: #fff;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  max-height: 500px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-track-color: transparent;
+  scrollbar-width: 0px;
+  scrollbar-color: #454545;
+}
+.search__container > ul > li {
+  text-align: left;
+  font-size: 1.2em;
+  padding: 5px;
+  font-size: 18px;
+  color: #454a4d;
+  font-family: 'Itim', cursive;
+}
+.search__container > ul > li:hover {
+  background-color: #eeeeee;
+  cursor: pointer;
+}
+.houses {
+  position: relative;
+  width: 100%;
+}
+.card__container {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  background-color: #ffffff;
+  padding: 0 8px;
+  justify-content: center;
+  align-items: center;
+  top: 300px;
+  z-index: 100;
+  /* border-top-right-radius: 50px;
+  border-top-left-radius: 50px; */
+}
+.card {
+  padding: 10px;
+  display: flex;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  margin: 5px;
+  text-decoration: none;
+}
+
+.card__body {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  position: relative;
+  flex: 1;
+  flex-shrink: 0;
+}
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  color: var(--primary);
+}
+.property__createdAt {
+  color: #454a4d;
+  font-family: 'Itim', cursive;
+  font-size: 0.8em;
+}
+.card__description {
+  color: #454a4d;
+  font-family: 'Kanit', sans-serif;
+}
+.card__media {
+  width: 292px;
+  height: 200px;
+  position: relative;
+  flex: 1;
+  flex-shrink: 0;
+}
+.card__media span {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: var(--primary);
+  display: 'flex';
+}
+.card__media img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.card__actions {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  color: var(--primary);
+  font-family: 'Itim', cursive;
+  display: flex;
+  flex-direction: column;
+  padding-right: 10px;
+  font-size: 18px;
+}
+
+.card__footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.nav__button {
+  padding: 20px;
+  display: flex;
+}
+.nav__button > ul {
+  display: flex;
+}
+.nav__button > ul > li {
+  list-style: none;
+}
+.nav__button > ul > li:not(:nth-last-of-type(2)) > span {
+  padding: 7px 13px;
+  margin: 5px;
+  background-color: #eeeeee;
+  border-radius: 3px;
+  color: #454a4d;
+  font-family: 'Kanit', sans-serif;
+}
+.nav__button > ul > li:not(:nth-last-of-type(2)) > span:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  transition: all 0.3s ease-in;
+}
+.loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active__navBtn {
+  color: var(--primary) !important;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+  transition: transform 0.3s ease-out;
+  position: relative;
+}
+.card:hover:after {
+  content: '';
+  position: absolute;
+  height: 5px;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(93, 217, 93, 0.3);
+  border-radius: 5px;
+  animation: draw 2s ease-out 0.3s 1 normal forwards;
+}
+
+.location {
+  animation: bounce 2s ease-out 0.3s 4 normal none;
+}
+
+.pagination {
+  margin: 15px auto;
+  display: flex;
+  list-style: none;
+  outline: none;
+}
+.pagination > .active > a {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pagination > li > a {
+  border: 1px solid var(--primary);
+  padding: 5px 10px;
+  outline: none;
+  cursor: pointer;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  outline: none;
+}
+.pagination > li > a,
+.pagination > li > span {
+  color: var(--primary);
+}
+.pagination > li:first-child > a,
+.pagination > li:first-child > span,
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+  border-radius: unset;
+}
+
+@-moz-keyframes bounce {
+  from {
+    transform: translateY(-30%) scaleY(1.2);
+  }
+  to {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@-webkit-keyframes bounce {
+  from {
+    transform: translateY(-30%) scaleY(1.2);
+  }
+  to {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(-30%) scaleY(1.2);
+  }
+  to {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@-moz-keyframes draw {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@-webkit-keyframes draw {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes draw {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+@media (max-width: 1028px) {
+  header > h1 {
+    padding-bottom: 0;
+  }
+  .search__container {
+    width: 70%;
+  }
+  .form__control {
+    border-radius: 20px;
+    border: 1px solid var(--primary);
+    margin: 1.2rem 0;
+    overflow: hidden;
+  }
+  .search__icon {
+    color: var(--primary);
+  }
+  .card__container {
+    grid-template-columns: repeat(2, 50%);
+    width: 90%;
+    top: 200px;
+  }
+  .card {
+    background-color: #fff;
+    flex-direction: column;
+  }
+  .card__media {
+    width: 100%;
+    flex: unset;
+  }
+  .card__body {
+    flex: unset;
+    height: 150px;
+  }
+}
+@media (max-width: 700px) {
+  header {
+    position: static;
+    background-image: unset;
+    height: auto;
+    box-shadow: inset 0 6em 5em rgb(255, 255, 255);
+  }
+  .houses {
+    max-height: 100vh;
+    overflow-y: scroll;
+    margin-bottom: 50px;
+  }
+  header > h1 {
+    display: none;
+  }
+  .search__container {
+    width: 80%;
+  }
+  .form__control {
+    border-radius: 20px;
+    border: 1px solid var(--primary);
+    margin: 1.2rem 0;
+    overflow: hidden;
+  }
+  .search__icon {
+    color: var(--primary);
+  }
+  .card__container {
+    grid-template-columns: repeat(1, 100%);
+    width: 100%;
+    left: unset;
+    top: unset;
+    position: static;
+  }
+  .card {
+    background-color: #fff;
+    flex-direction: column;
+  }
+  .card__media {
+    width: 100%;
+  }
+  .pagination {
+    display: none;
+  }
+}

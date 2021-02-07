@@ -1,0 +1,101 @@
+.main .container {
+  display: none;
+}
+.title {
+  font-family: 'Itim', cursive;
+  color: #454a4d;
+  position: relative;
+  display: block;
+  margin-bottom: 1.5em;
+  padding-bottom: 0.5em;
+}
+.title:after {
+  content: '';
+  width: 40px;
+  height: 7px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #5dd95d;
+}
+.content__container {
+  display: flex;
+  padding-bottom: 20px;
+}
+.excutive__container {
+  display: flex;
+  flex-direction: column;
+  background-color: #5dd95d;
+  justify-content: center;
+  padding: 10px 20px;
+}
+.exc__card {
+  width: 200px;
+  background: transparent;
+  position: relative;
+  margin: 5px 0;
+}
+.exc__invisible {
+  width: 100%;
+  height: 100px;
+  visibility: hidden;
+}
+.exc__avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto;
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+.exc__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 0 50%;
+}
+.exc__body {
+  background-color: #ffffff;
+  padding-top: 25px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  padding-bottom: 8px;
+}
+.exc__body h2 {
+  font-size: 1em;
+  text-align: center;
+  font-family: 'Itim', cursive;
+  color: #454a4d;
+}
+.exc__body h3 {
+  padding-bottom: 5px;
+}
+.exc__body h3,
+.exc__body p {
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.8em;
+  color: #454a4d;
+  text-align: center;
+}
+.exc__body .social__media {
+  justify-content: center;
+}
+.about__container {
+  padding: 0 20px;
+  color: #454a4d;
+}
+.about__container h2 {
+  font-family: 'Itim', cursive;
+  padding: 10px 0;
+}
+@media (max-width: 1028px) {
+  .main {
+    display: none;
+  }
+}
