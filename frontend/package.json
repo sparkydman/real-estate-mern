@@ -1,6 +1,7 @@
 {
   "name": "real-estate-app",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@babel/preset-env": "^7.12.1",

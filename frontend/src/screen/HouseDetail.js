@@ -14,7 +14,7 @@ const overide = css`
   border-color: #5dd95d;
 `;
 
-const houseDetail = ({ match }) => {
+const HouseDetail = ({ match }) => {
   const [photoIndex, setPhotoIndex] = React.useState(null);
   const [isOpen, setOpen] = React.useState(false);
   const [images, setImages] = React.useState([]);
@@ -53,19 +53,19 @@ const houseDetail = ({ match }) => {
       ) : (
         property &&
         property.success && (
-          <div className='main__container'>
-            <div className='property__top'>
-              <div className='img__div' onClick={() => setOpen(true)}>
+          <div className="main__container">
+            <div className="property__top">
+              <div className="img__div" onClick={() => setOpen(true)}>
                 <img
                   src={
                     property.data.cover
                       ? property.data.cover.url
                       : property.data.images[0].url
                   }
-                  alt=''
+                  alt=""
                 />
                 <span>
-                  <i className='fas fa-images'></i>
+                  <i className="fas fa-images"></i>
                   {images.length}
                 </span>
                 <span></span>
@@ -88,21 +88,21 @@ const houseDetail = ({ match }) => {
                   />
                 )}
               </div>
-              <div className='info__container'>
+              <div className="info__container">
                 <p>{property.data.description}</p>
-                <div className='address'>
+                <div className="address">
                   <h2>Address</h2>
                   <p>{property.data.address}</p>
                 </div>
-                <div className='agents'>
+                <div className="agents">
                   <h2>Agent</h2>
                   <ul>
                     <li>
                       <div>
                         <img
                           src={property.data.agent.avatar}
-                          alt=''
-                          className='agent__avatar'
+                          alt=""
+                          className="agent__avatar"
                         />
                         <p>{property.data.agent.firstname}</p>
                         <p>{property.data.agent.lastname}</p>
@@ -111,8 +111,8 @@ const houseDetail = ({ match }) => {
                   </ul>
                 </div>
               </div>
-              <div className='property__map'>
-                <div className='google__map'></div>
+              <div className="property__map">
+                <div className="google__map"></div>
               </div>
             </div>
           </div>
@@ -122,4 +122,4 @@ const houseDetail = ({ match }) => {
   );
 };
 
-export default houseDetail;
+export default HouseDetail;
