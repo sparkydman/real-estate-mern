@@ -8,7 +8,7 @@
     "lint": "lint . --ignore-path .gitignore ",
     "lint:quiet": "npm run lint -- -- quiet",
     "lint:fix": "npm run lint -- -- fix",
-    "start": "NODE_ENV=production node server.js",
+    "start": "SET NODE_ENV=production & node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
