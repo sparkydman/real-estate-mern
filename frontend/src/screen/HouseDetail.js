@@ -36,7 +36,7 @@ const HouseDetail = ({ match }) => {
   }, [property]);
 
   return (
-    <div>
+    <div style={{ height: '100vh', overflow: 'scroll' }}>
       {loading ? (
         <div>
           <ClipLoader

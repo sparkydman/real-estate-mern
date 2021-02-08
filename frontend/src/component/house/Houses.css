@@ -1,5 +1,6 @@
 :root {
   --primary: #5dd95d;
+  --secondary: #454a4d;
 }
 header {
   position: absolute;
@@ -50,7 +51,7 @@ header button {
   border: 0;
   outline: 0;
   font-size: 18px;
-  color: #454a4d;
+  color: var(--secondary);
   font-family: 'Itim', cursive;
   flex: 1;
 }
@@ -75,7 +76,7 @@ header button {
   font-size: 1.2em;
   padding: 5px;
   font-size: 18px;
-  color: #454a4d;
+  color: var(--secondary);
   font-family: 'Itim', cursive;
 }
 .search__container > ul > li:hover {
@@ -126,12 +127,12 @@ header button {
   color: var(--primary);
 }
 .property__createdAt {
-  color: #454a4d;
+  color: var(--secondary);
   font-family: 'Itim', cursive;
   font-size: 0.8em;
 }
 .card__description {
-  color: #454a4d;
+  color: var(--secondary);
   font-family: 'Kanit', sans-serif;
 }
 .card__media {
@@ -187,7 +188,7 @@ header button {
   margin: 5px;
   background-color: #eeeeee;
   border-radius: 3px;
-  color: #454a4d;
+  color: var(--secondary);
   font-family: 'Kanit', sans-serif;
 }
 .nav__button > ul > li:not(:nth-last-of-type(2)) > span:hover {
@@ -361,9 +362,8 @@ header button {
     box-shadow: inset 0 6em 5em rgb(255, 255, 255);
   }
   .houses {
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: scroll;
-    margin-bottom: 50px;
   }
   header > h1 {
     display: none;
