@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: 'http://localhost:5500/api/v1/',
+  baseURL: 'https://real-estate-space.herokuapp.com/api/v1/',
   headers: {
     'Content-Type': 'application/json',
   },
