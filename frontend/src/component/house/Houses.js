@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import { css } from '@emotion/core';
 import ClipLoader from 'react-spinners/ClipLoader';
 import HouseItem from './HouseItem';
+// import houseImg from '/house.jpg';
 import './Houses.css';
 
 import { useSelector } from 'react-redux';
@@ -50,36 +51,26 @@ const Houses = () => {
   };
 
   return (
-    <div className='houses' id='houses'>
-      <header>
+    <div className="houses" id="houses">
+      <header style={{ backgroundImage: `url(/house.jpg)` }}>
         <h1>Search for a home</h1>
 
-        <div className='search__container'>
+        <div className="search__container">
           <form>
-            <div className='form__control'>
-              <input placeholder='Search for properties' />
-              <span className='search__icon'>
-                <i className='fas fa-search'></i>
+            <div className="form__control">
+              <input placeholder="Search for properties" />
+              <span className="search__icon">
+                <i className="fas fa-search"></i>
               </span>
             </div>
-            <button type='submit'>search</button>
+            <button type="submit">search</button>
           </form>
           <ul></ul>
         </div>
-
-        {/* <form>
-          <div className="form__control">
-            <input type="text" name="search" placeholder="Search for a home" />
-            <span className="search__icon">
-              <i className="fas fa-search"></i>
-            </span>
-          </div>
-          <button type="submit">search</button>
-        </form> */}
       </header>
-      <div className='card__container'>
+      <div className="card__container">
         {loading ? (
-          <div className='loader'>
+          <div className="loader">
             <ClipLoader
               css={overide}
               size={100}
