@@ -4,7 +4,6 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 import property from './routes/property.js';
 import review from './routes/review.js';
@@ -45,12 +44,10 @@ app.use('/api/v1/review', review);
 app.use('/api/v1/dm', dm);
 
 app.use(errorHandler);
-// console.log(process.env.NODE_ENV);
+
+const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === 'production') {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-
   app.use(express.static('frontend/build'));
 
   app.get('*', (req, res) => {
