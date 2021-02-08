@@ -370,6 +370,7 @@ header button {
   }
   .search__container {
     width: 80%;
+    padding-bottom: 5px;
   }
   .form__control {
     border-radius: 20px;
