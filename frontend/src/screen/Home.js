@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-// import About from "./about/About";
-// import Footer from "./footer/Footer";
 import Houses from '../component/house/Houses';
 import { useDispatch } from 'react-redux';
 import { getAllProperties } from '../actions/properties';
+import BottomNavDialog from '../component/dialog/BottomNavDialog';
+// import Login from '../component/dialog/Login';
+import Register from '../component/dialog/Register';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -13,8 +14,9 @@ const Home = () => {
   return (
     <>
       <Houses />
-      {/* <About />
-      <Footer /> */}
+      <BottomNavDialog title="Register" icon="lock">
+        <Register />
+      </BottomNavDialog>
     </>
   );
 };

@@ -1,0 +1,11 @@
+// Bottom navigiation dialog
+export const OPEN_BND_LGOIN = 'OPEN_BND_LGOIN';
+export const CLOSE_BND_LGOIN = 'CLOSE_BND_LGOIN';
+export const OPEN_BND_REGISTER = 'OPEN_BND_REGISTER';
+export const CLOSE_BND_REGISTER = 'CLOSE_BND_REGISTER';
+export const OPEN_BND_MENU = 'OPEN_BND_MENU';
+export const CLOSE_BND_MENU = 'CLOSE_BND_MENU';
+export const OPEN_BND_CART = 'OPEN_BND_CART';
+export const CLOSE_BND_CART = 'CLOSE_BND_CART';
+export const OPEN_BND_NOTICATION = 'OPEN_BND_NOTICATION';
+export const CLOSE_BND_NOTICATION = 'CLOSE_BND_NOTICATION';
