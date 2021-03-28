@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import { getAllProperties } from '../actions/properties';
 import BottomNavDialog from '../component/dialog/BottomNavDialog';
 // import Login from '../component/dialog/Login';
-import Register from '../component/dialog/Register';
+import Menu from '../component/dialog/Menu';
+// import Register from '../component/dialog/Register';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Home = () => {
     <>
       <Houses />
       <BottomNavDialog title="Register" icon="lock">
-        <Register />
+        <Menu />
       </BottomNavDialog>
     </>
   );

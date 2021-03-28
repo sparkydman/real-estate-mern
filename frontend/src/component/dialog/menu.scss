@@ -1,0 +1,31 @@
+$primary: rgb(93, 217, 93);
+$secondary: rgb(69, 74, 77);
+$accent: #dddddd;
+.menu__dialog {
+  padding: 0.8rem;
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    list-style-type: none;
+    li {
+      display: flex;
+      flex-direction: column;
+      padding: 0.8rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      align-items: center;
+      box-shadow: 0 5px 10px rgba($color: #000000, $alpha: 0.25);
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.08);
+        transition: transform 0.5s ease-in;
+      }
+      .fa {
+        padding-bottom: 10px;
+        // font-size: 1.5rem;
+      }
+    }
+  }
+}

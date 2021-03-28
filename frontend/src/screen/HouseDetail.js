@@ -23,7 +23,7 @@ const HouseDetail = ({ match }) => {
   React.useEffect(() => {
     const id = match.params.id;
     dispatch(getPropertyDetail(id));
-  }, [dispatch]);
+  }, [dispatch, match]);
 
   const propertyDetail = useSelector((state) => state.propertyDetail);
   const { loading, property, error } = propertyDetail;

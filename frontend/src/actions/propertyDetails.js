@@ -5,7 +5,7 @@ import {
   GET_PROPERRTY_DETAIL_SUCCESS,
 } from '../constants/properties';
 
-export default (propertyId) => async (dispatch) => {
+const propertyDetail = (propertyId) => async (dispatch) => {
   try {
     dispatch({ type: GET_PROPERRTY_DETAIL_REQUEST });
 
@@ -24,3 +24,4 @@ export default (propertyId) => async (dispatch) => {
     });
   }
 };
+export default propertyDetail;

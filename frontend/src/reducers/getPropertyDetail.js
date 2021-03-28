@@ -4,7 +4,7 @@ import {
   GET_PROPERRTY_DETAIL_SUCCESS,
 } from '../constants/properties';
 
-export default (state = { property: {} }, action) => {
+const getPropertyDetail = (state = { property: {} }, action) => {
   const { type, payload } = action;
   switch (type) {
     case GET_PROPERRTY_DETAIL_REQUEST:
@@ -18,3 +18,5 @@ export default (state = { property: {} }, action) => {
       return state;
   }
 };
+
+export default getPropertyDetail;
