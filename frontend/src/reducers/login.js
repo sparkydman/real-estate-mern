@@ -6,7 +6,7 @@ const login = (state = { user: {} }, action) => {
     case LOGIN_REQUEST:
       return { loading: true };
     case LOGIN_SUCCESS:
-      return { loading: false, property: payload };
+      return { loading: false, user: payload };
     case LOGIN_FAIL:
       return { loading: false, error: payload };
 

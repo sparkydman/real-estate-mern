@@ -1,18 +1,18 @@
 import axios from '../http';
-import { LOGIN_REQUEST, LOGIN_FAIL, LOGIN_SUCCESS } from '../constants/auth';
+import { GET_ME_REQUEST, GET_ME_FAIL, GET_ME_SUCCESS } from '../constants/auth';
 
 const login = (userData) => async (dispatch) => {
   try {
-    dispatch({ type: LOGIN_REQUEST });
+    dispatch({ type: GET_ME_REQUEST });
 
-    const { data } = await axios.post('/user/login', userData);
+    const { data } = await axios.get('/user/profile', userData);
     dispatch({
-      type: LOGIN_SUCCESS,
+      type: GET_ME_SUCCESS,
       payload: data,
     });
   } catch (err) {
     dispatch({
-      type: LOGIN_FAIL,
+      type: GET_ME_FAIL,
       payload: err.response ? err.response.data.error.message : err.message,
     });
   }

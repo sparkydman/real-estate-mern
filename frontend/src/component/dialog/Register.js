@@ -1,8 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { OPEN_BOTTOM_NAV } from '../../constants/ui';
 import Avatar from '../util/Avatar';
 import './Login.scss';
 
 const Register = () => {
+  const dispatch = useDispatch();
+
   const uploadStyle = { backgroundColor: '#454a4d', color: '#fff' };
 
   return (
@@ -104,7 +108,22 @@ const Register = () => {
         </button>
       </div>
       <p className="form__footer_link">
-        Already have account? <span className="form__register_link">Login</span>
+        Already have account?{' '}
+        <span
+          className="form__register_link"
+          onClick={() =>
+            dispatch({
+              type: OPEN_BOTTOM_NAV,
+              payload: {
+                elmt: 'login',
+                title: 'Login',
+                icon: 'lock',
+              },
+            })
+          }
+        >
+          Login
+        </span>
       </p>
     </form>
   );

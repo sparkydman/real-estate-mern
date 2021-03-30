@@ -1,23 +1,42 @@
-import { OPEN_BND_LGOIN, OPEN_BND_REGISTER } from '../constants/ui';
+import {
+  TOGGLE_BOTTOM_NAV,
+  CLOSE_BOTTOM_NAV,
+  OPEN_BOTTOM_NAV,
+} from '../constants/ui';
 
-export const openAuth = (
-  state = { openLogin: false, openRegister: false },
-  action
-) => {
-  const { type } = action;
+const initialState = {
+  toggleBottomNav: false,
+  element: '',
+  title: '',
+  icon: '',
+};
+
+const UIReducer = (state = initialState, action) => {
+  const { type, payload } = action;
   switch (type) {
-    case OPEN_BND_LGOIN:
+    case TOGGLE_BOTTOM_NAV:
       return {
-        openLogin: true,
-        openRegister: false,
+        ...state,
+        toggleBottomNav: !state.toggleBottomNav,
+        element: payload.elmt,
+        title: payload.title,
+        icon: payload.icon,
       };
-    case OPEN_BND_REGISTER:
+    case OPEN_BOTTOM_NAV:
       return {
-        openLogin: false,
-        openRegister: true,
+        ...state,
+        toggleBottomNav: true,
+        element: payload.elmt,
+        title: payload.title,
+        icon: payload.icon,
       };
-
+    case CLOSE_BOTTOM_NAV:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }
 };
+
+export default UIReducer;
