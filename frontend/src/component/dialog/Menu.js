@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './menu.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import logoutUser from '../../actions/logout';
 import { CLOSE_BOTTOM_NAV, OPEN_BOTTOM_NAV } from '../../constants/ui';
 import { useHistory } from 'react-router-dom';
+import Categories from '../dialog/Categories';
 
 const Menu = () => {
+  const [categories, setCategories] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const logout = useSelector((state) => state.logout);
@@ -21,27 +23,39 @@ const Menu = () => {
   return (
     <div className="menu__dialog">
       <ul>
-        <li>
+        <li
+          className={`${categories ? 'shrink' : ''}`}
+          onClick={() => {
+            history.push('/contact-us');
+            dispatch({ type: CLOSE_BOTTOM_NAV });
+          }}
+        >
           <i className="fa fa-phone-square fa-3x"></i> Contact us
         </li>
-        <li>
-          <i
-            className="fa fa-info-circle fa-3x"
-            onClick={() => {
-              history.push('/about-us');
-              dispatch({ type: CLOSE_BOTTOM_NAV });
-            }}
-          ></i>
+        <li
+          className={`${categories ? 'shrink' : ''}`}
+          onClick={() => {
+            history.push('/about-us');
+            dispatch({ type: CLOSE_BOTTOM_NAV });
+          }}
+        >
+          <i className="fa fa-info-circle fa-3x"></i>
           About us
         </li>
-        <li>
+        <li className={`${categories ? 'shrink' : ''}`}>
           <i className="fa fa-calendar-check fa-3x"></i>Events
         </li>
-        <li>
-          <i className="fa fa-th fa-3x"></i>Categories
+        <li
+          className={`${categories ? 'shrink category__btn' : ''}`}
+          onClick={() => setCategories(!categories)}
+        >
+          <i className="fa fa-th fa-3x"></i>
+          Categories
         </li>
+        {categories && <Categories />}
         {localStorage.token ? (
           <li
+            className={`${categories ? 'shrink' : ''}`}
             onClick={() => {
               dispatch(logoutUser());
             }}
@@ -51,6 +65,7 @@ const Menu = () => {
         ) : (
           <>
             <li
+              className={`${categories ? 'shrink' : ''}`}
               onClick={() =>
                 dispatch({
                   type: OPEN_BOTTOM_NAV,
@@ -65,6 +80,7 @@ const Menu = () => {
               <i className="fa fa-sign-in-alt fa-3x"></i>Sign in
             </li>
             <li
+              className={`${categories ? 'shrink' : ''}`}
               onClick={() =>
                 dispatch({
                   type: OPEN_BOTTOM_NAV,

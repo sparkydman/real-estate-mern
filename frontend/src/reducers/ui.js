@@ -2,6 +2,7 @@ import {
   TOGGLE_BOTTOM_NAV,
   CLOSE_BOTTOM_NAV,
   OPEN_BOTTOM_NAV,
+  TOGGLE_CATEGORY,
 } from '../constants/ui';
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   element: '',
   title: '',
   icon: '',
+  toggleCategory: false,
 };
 
 const UIReducer = (state = initialState, action) => {
@@ -33,6 +35,11 @@ const UIReducer = (state = initialState, action) => {
     case CLOSE_BOTTOM_NAV:
       return {
         ...initialState,
+      };
+    case TOGGLE_CATEGORY:
+      return {
+        ...state,
+        toggleCategory: !state.toggleCategory,
       };
     default:
       return state;

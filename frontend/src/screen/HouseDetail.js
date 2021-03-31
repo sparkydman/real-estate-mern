@@ -21,7 +21,7 @@ const HouseDetail = ({ match }) => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    const id = match.params.id;
+    const id = match.params.houseId;
     dispatch(getPropertyDetail(id));
   }, [dispatch, match]);
 

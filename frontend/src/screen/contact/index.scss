@@ -8,8 +8,7 @@ $secondary: rgb(69, 74, 77);
     font-family: 'Itim', cursive;
     .contact__container {
       display: flex;
-      height: 400px;
-      margin: auto;
+      height: 450px;
       .branch__offices {
         flex: 1;
         overflow: hidden;
@@ -90,5 +89,16 @@ $secondary: rgb(69, 74, 77);
         }
       }
     }
+  }
+}
+@media (max-width: 701px) {
+  .form__container {
+    h2 {
+      display: none;
+    }
+  }
+  .contact__container {
+    flex-direction: column;
+    height: auto !important;
   }
 }

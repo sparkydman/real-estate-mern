@@ -1,23 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './BottomNav.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { TOGGLE_BOTTOM_NAV, CLOSE_BOTTOM_NAV } from '../../constants/ui';
+// import getMe from '../../actions/getMe';
 
-const BottomNav = ({ user = {} }) => {
+const BottomNav = () => {
   const dispatch = useDispatch();
   const ui = useSelector((state) => state.ui);
   const { element } = ui;
-  const isEmpty = Object.keys(user).length === 0;
   const history = useHistory();
+  const isEmpty = Boolean(localStorage.token);
+
+  // useEffect(() => {
+  //   dispatch(getMe());
+  // }, [dispatch]);
 
   const handleClick = (elmt) => {
-    // if (toggleBottomNav) {
-    //   dispatch({ type: CLOSE_BOTTOM_NAV });
-    // }
     switch (elmt) {
       case 'notification':
-        return isEmpty
+        return !isEmpty
           ? dispatch({
               type: TOGGLE_BOTTOM_NAV,
               payload: { elmt: 'login', title: 'Login', icon: 'lock' },
@@ -31,14 +33,14 @@ const BottomNav = ({ user = {} }) => {
               },
             });
       case 'profile':
-        return isEmpty
+        return !isEmpty
           ? dispatch({
               type: TOGGLE_BOTTOM_NAV,
               payload: { elmt: 'login', title: 'Login', icon: 'lock' },
             })
-          : history.push(`/profile/${user._id}`);
+          : history.push('/profile');
       case 'cart':
-        return isEmpty
+        return !isEmpty
           ? dispatch({
               type: TOGGLE_BOTTOM_NAV,
               payload: {

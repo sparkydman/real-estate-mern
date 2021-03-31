@@ -1,0 +1,8 @@
+.cart {
+  height: calc(100vh - 100px);
+}
+@media (min-width: 701px) {
+  .cart {
+    height: auto;
+  }
+}

@@ -56,7 +56,7 @@ const PropertySchema = new mongoose.Schema(
         'duplex',
         'bungalow',
         'flat',
-        'self - contain',
+        'self-contain',
         'room',
         'attach',
         'container',

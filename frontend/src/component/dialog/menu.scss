@@ -27,5 +27,14 @@ $accent: #dddddd;
         // font-size: 1.5rem;
       }
     }
+    .shrink.category__btn {
+      color: $primary;
+    }
+    .shrink {
+      .fa {
+        display: none;
+        transition: all 0.5s;
+      }
+    }
   }
 }
