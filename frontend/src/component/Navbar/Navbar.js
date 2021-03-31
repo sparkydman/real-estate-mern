@@ -1,9 +1,50 @@
-import React from 'react';
-// import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { CLOSE_BOTTOM_NAV, TOGGLE_BOTTOM_NAV } from '../../constants/ui';
 import './Navbar.css';
 
-const Navbar = () => {
-  // const flipWord = (word) => word.split("").reverse().reverse().join("");
+const Navbar = ({ user = {} }) => {
+  const [active, setActive] = useState('home');
+  const [categories, setCategories] = useState(false);
+  const dispatch = useDispatch();
+  const ui = useSelector((state) => state.ui);
+  const { toggleBottomNav } = ui;
+  const isEmpty = Object.keys(user).length === 0;
+
+  const history = useHistory();
+  useEffect(() => {
+    let url = '';
+    if (toggleBottomNav) {
+      url = '/signin';
+    } else if (categories) {
+      url = '/categories';
+    } else {
+      url = history.location.pathname;
+    }
+
+    switch (url) {
+      case '/':
+        setActive('home');
+        break;
+      case '/about-us':
+        setActive('about');
+        break;
+      case '/contact-us':
+        setActive('contact');
+        break;
+      case '/categories':
+        setActive('categories');
+        break;
+      case '/signin':
+        setActive('signin');
+        break;
+
+      default:
+        setActive('home');
+        break;
+    }
+  }, [history, toggleBottomNav, categories]);
 
   return (
     <div className="header">
@@ -59,16 +100,60 @@ const Navbar = () => {
           </div>
           <ul className="bottom__menu">
             <li>
-              <a href="/#home">Home</a>
+              <Link
+                to="/"
+                className={`link ${active === 'home' ? 'active__link' : ''}`}
+                onClick={() => {
+                  if (toggleBottomNav) dispatch({ type: CLOSE_BOTTOM_NAV });
+                  if (categories) setCategories(false);
+                }}
+              >
+                Home
+              </Link>
             </li>
             <li>
-              <a href="/#houses">Categories</a>
+              <span
+                className={`link ${
+                  active === 'categories' ? 'active__link' : ''
+                }`}
+                onClick={() => {
+                  if (toggleBottomNav) dispatch({ type: CLOSE_BOTTOM_NAV });
+                  setCategories(!categories);
+                }}
+              >
+                Categories
+              </span>
             </li>
             <li>
-              <a href="/#about-us">Contact us</a>
+              <span
+                className={`link ${active === 'contact' ? 'active__link' : ''}`}
+              >
+                Contact us
+              </span>
             </li>
             <li>
-              <a href="/#about-us">About us</a>
+              <span
+                className={`link ${active === 'about' ? 'active__link' : ''}`}
+              >
+                About us
+              </span>
+            </li>
+            <li>
+              <span
+                className={`link ${active === 'signin' ? 'active__link' : ''}`}
+                onClick={() =>
+                  dispatch({
+                    type: TOGGLE_BOTTOM_NAV,
+                    payload: {
+                      elmt: 'login',
+                      title: 'Login',
+                      icon: 'lock',
+                    },
+                  })
+                }
+              >
+                Sign in
+              </span>
             </li>
           </ul>
         </div>
