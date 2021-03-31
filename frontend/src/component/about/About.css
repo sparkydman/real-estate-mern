@@ -1,5 +1,5 @@
 .main .container {
-  display: none;
+  flex-direction: column;
 }
 .title {
   font-family: 'Itim', cursive;
@@ -95,7 +95,19 @@
   padding: 10px 0;
 }
 @media (max-width: 1028px) {
-  .main {
-    display: none;
+  .content__container {
+    flex-direction: column-reverse;
+  }
+  .title {
+    margin-bottom: 0.5em;
+  }
+  .excutive__container {
+    align-items: center;
+    margin-top: 20px;
+    background-color: #ffffff;
+  }
+  .exc__card {
+    background-color: #5dd95d;
+    border-radius: 50%;
   }
 }

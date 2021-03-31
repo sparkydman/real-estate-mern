@@ -12,7 +12,8 @@
   bottom: 0;
   left: 0;
   background-color: #fff;
-  box-shadow: 0 0 -1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.25);
+  z-index: 100;
 }
 .bottomnav > .bottomnav__item {
   padding: 8px;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CLOSE_BOTTOM_NAV, TOGGLE_BOTTOM_NAV } from '../../constants/ui';
 import './Navbar.css';
 
@@ -12,39 +12,14 @@ const Navbar = ({ user = {} }) => {
   const { toggleBottomNav } = ui;
   const isEmpty = Object.keys(user).length === 0;
 
-  const history = useHistory();
+  // const history = useHistory();
   useEffect(() => {
-    let url = '';
     if (toggleBottomNav) {
-      url = '/signin';
+      setActive('signin');
     } else if (categories) {
-      url = '/categories';
-    } else {
-      url = history.location.pathname;
+      setActive('categories');
     }
-
-    switch (url) {
-      case '/':
-        setActive('home');
-        break;
-      case '/about-us':
-        setActive('about');
-        break;
-      case '/contact-us':
-        setActive('contact');
-        break;
-      case '/categories':
-        setActive('categories');
-        break;
-      case '/signin':
-        setActive('signin');
-        break;
-
-      default:
-        setActive('home');
-        break;
-    }
-  }, [history, toggleBottomNav, categories]);
+  }, [toggleBottomNav, categories]);
 
   return (
     <div className="header">
@@ -106,6 +81,7 @@ const Navbar = ({ user = {} }) => {
                 onClick={() => {
                   if (toggleBottomNav) dispatch({ type: CLOSE_BOTTOM_NAV });
                   if (categories) setCategories(false);
+                  setActive('home');
                 }}
               >
                 Home
@@ -125,18 +101,30 @@ const Navbar = ({ user = {} }) => {
               </span>
             </li>
             <li>
-              <span
+              <Link
+                to="/contact-us"
                 className={`link ${active === 'contact' ? 'active__link' : ''}`}
+                onClick={() => {
+                  if (toggleBottomNav) dispatch({ type: CLOSE_BOTTOM_NAV });
+                  if (categories) setCategories(false);
+                  setActive('contact');
+                }}
               >
                 Contact us
-              </span>
+              </Link>
             </li>
             <li>
-              <span
+              <Link
+                to="/about-us"
                 className={`link ${active === 'about' ? 'active__link' : ''}`}
+                onClick={() => {
+                  if (toggleBottomNav) dispatch({ type: CLOSE_BOTTOM_NAV });
+                  setCategories(false);
+                  setActive('about');
+                }}
               >
                 About us
-              </span>
+              </Link>
             </li>
             <li>
               <span

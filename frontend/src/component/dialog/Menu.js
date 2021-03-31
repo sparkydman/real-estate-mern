@@ -3,11 +3,11 @@ import './menu.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import logoutUser from '../../actions/logout';
 import { CLOSE_BOTTOM_NAV, OPEN_BOTTOM_NAV } from '../../constants/ui';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const Menu = () => {
   const dispatch = useDispatch();
-  // const history = useHistory();
+  const history = useHistory();
   const logout = useSelector((state) => state.logout);
   const { loading, status } = logout;
 
@@ -25,7 +25,14 @@ const Menu = () => {
           <i className="fa fa-phone-square fa-3x"></i> Contact us
         </li>
         <li>
-          <i className="fa fa-info-circle fa-3x"></i>About us
+          <i
+            className="fa fa-info-circle fa-3x"
+            onClick={() => {
+              history.push('/about-us');
+              dispatch({ type: CLOSE_BOTTOM_NAV });
+            }}
+          ></i>
+          About us
         </li>
         <li>
           <i className="fa fa-calendar-check fa-3x"></i>Events
