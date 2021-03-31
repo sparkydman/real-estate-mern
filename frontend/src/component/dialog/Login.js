@@ -3,6 +3,7 @@ import './Login.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import loginUser from '../../actions/login';
 import { CLOSE_BOTTOM_NAV, OPEN_BOTTOM_NAV } from '../../constants/ui';
+import Loader from '../util/Loader';
 
 const initialState = {
   email: '',
@@ -25,6 +26,7 @@ const Login = () => {
   useEffect(() => {
     if (!loading && user?.success) {
       localStorage.setItem('token', `Bearer ${user.token}`);
+      setValue(initialState);
       dispatch({ type: CLOSE_BOTTOM_NAV });
     }
   }, [user, loading, dispatch]);
@@ -56,7 +58,7 @@ const Login = () => {
       {error && <small>{error}</small>}
       <div className="form__control_login">
         <button type="submit" className="submit__btn" disabled={loading}>
-          {loading ? <img src="/loader.gif" alt="loading..." /> : 'Login'}
+          {loading ? <Loader /> : 'Login'}
         </button>
       </div>
       <p className="form__footer_link">

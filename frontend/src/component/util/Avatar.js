@@ -9,6 +9,7 @@ const Avatar = ({ width, height, url }) => {
     boxShadow: '0px 0px 3px #ddd',
     zIndex: 1,
     backgroundColor: '#fff',
+    overflow: 'hidden',
   };
   const imgStyle = {
     width: '100%',

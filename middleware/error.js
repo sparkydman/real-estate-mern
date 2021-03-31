@@ -40,7 +40,7 @@ const handleBadObjectId = (err, res) => {
 
 const handleDuplicateError = (err, res) => {
   const path = Object.keys(err.keyValue);
-  const error = new ErrorRes(`${path} already exist`, path, 409);
+  const error = new ErrorRes([`${path} already exist`], path, 409);
   res.status(409).json({
     success: false,
     error,

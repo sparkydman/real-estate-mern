@@ -6,7 +6,10 @@ if (localStorage.token) {
 }
 
 const http = axios.create({
-  baseURL: 'https://real-estate-space.herokuapp.com/api/v1/',
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://real-estate-space.herokuapp.com/api/v1/'
+      : 'http://localhost:5500/api/v1',
   headers: {
     'Content-Type': 'application/json',
     Authorization: token,
