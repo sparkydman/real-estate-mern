@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import BottomNavDialog from '../../component/dialog/BottomNavDialog';
 import getDialog from '../../component/util/dialog';
-import './index.scss';
+import './index.css';
 
 const ContactUs = () => {
   const ui = useSelector((state) => state.ui);

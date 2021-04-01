@@ -7,6 +7,8 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { useDispatch, useSelector } from 'react-redux';
 import getPropertyDetail from '../actions/propertyDetails';
+import BottomNavDialog from '../component/dialog/BottomNavDialog';
+import getDialog from '../component/util/dialog';
 
 const overide = css`
   display: block;
@@ -19,6 +21,8 @@ const HouseDetail = ({ match }) => {
   const [isOpen, setOpen] = React.useState(false);
   const [images, setImages] = React.useState([]);
   const dispatch = useDispatch();
+  const ui = useSelector((state) => state.ui);
+  const { toggleBottomNav, element, title, icon } = ui;
 
   React.useEffect(() => {
     const id = match.params.houseId;
@@ -117,6 +121,11 @@ const HouseDetail = ({ match }) => {
             </div>
           </div>
         )
+      )}
+      {toggleBottomNav && (
+        <BottomNavDialog title={title} icon={icon}>
+          {getDialog(element)}
+        </BottomNavDialog>
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CLOSE_BOTTOM_NAV, OPEN_BOTTOM_NAV } from '../../constants/ui';
 import Avatar from '../util/Avatar';
-import './Login.scss';
+import './Login.css';
 import registerUser from '../../actions/register';
 import getErrMsg from '../util/errorMsg';
 import Loader from '../util/Loader';

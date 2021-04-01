@@ -1,0 +1,36 @@
+.menu__dialog {
+  padding: 0.8rem;
+}
+.menu__dialog > ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  list-style-type: none;
+}
+.menu__dialog > ul > li {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  align-items: center;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+.menu__dialog > ul > li:hover {
+  transform: scale(1.08);
+  transition: transform 0.5s ease-in;
+}
+.menu__dialog > ul > li > .fa {
+  padding-bottom: 10px;
+  /* font-size: 1.5rem; */
+}
+
+.shrink.category__btn {
+  color: var(--primary);
+}
+.shrink > .fa {
+  display: none;
+  transition: all 0.5s;
+}

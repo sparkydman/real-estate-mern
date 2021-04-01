@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './menu.scss';
+import './menu.css';
 import { useDispatch, useSelector } from 'react-redux';
 import logoutUser from '../../actions/logout';
 import { CLOSE_BOTTOM_NAV, OPEN_BOTTOM_NAV } from '../../constants/ui';
