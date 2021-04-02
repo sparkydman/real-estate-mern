@@ -9,7 +9,7 @@ const getMe = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ME_REQUEST });
 
-    const { data } = await axios.get('/user/profile');
+    const { data } = await axios.get('/api/v1/user/profile');
     dispatch({
       type: GET_ME_SUCCESS,
       payload: data,

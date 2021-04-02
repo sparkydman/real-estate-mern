@@ -6,7 +6,7 @@ const login = (userData) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
 
-    const { data } = await axios.post('/user/login', userData);
+    const { data } = await axios.post('/api/v1/user/login', userData);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: data,

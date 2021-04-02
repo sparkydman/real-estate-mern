@@ -9,7 +9,7 @@ const propertyDetail = (propertyId) => async (dispatch) => {
   try {
     dispatch({ type: GET_PROPERRTY_DETAIL_REQUEST });
 
-    const { data } = await axios.get(`/property/${propertyId}`);
+    const { data } = await axios.get(`/api/v1/property/${propertyId}`);
     dispatch({
       type: GET_PROPERRTY_DETAIL_SUCCESS,
       payload: data,

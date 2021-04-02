@@ -9,7 +9,7 @@ const createProperty = (property) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_PROPERTY_REQUEST });
 
-    const { data } = await axios.post('/property', property);
+    const { data } = await axios.post('/api/v1/property', property);
     dispatch({
       type: CREATE_PROPERTY_SUCCESS,
       payload: data,

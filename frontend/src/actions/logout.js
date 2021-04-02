@@ -10,7 +10,7 @@ const logout = () => async (dispatch) => {
   try {
     dispatch({ type: LOGOUT_REQUEST });
 
-    const { data } = await axios.get('/user/logout');
+    const { data } = await axios.get('/api/v1/user/logout');
     if (data.success) {
       dispatch({
         type: GET_ME_SUCCESS,

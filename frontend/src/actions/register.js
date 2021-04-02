@@ -10,7 +10,7 @@ const register = (userData) => async (dispatch) => {
   try {
     dispatch({ type: REGISTER_REQUEST });
 
-    const { data } = await axios.post('/user/register', userData);
+    const { data } = await axios.post('/api/v1/user/register', userData);
     dispatch({
       type: REGISTER_SUCCESS,
       payload: data,
