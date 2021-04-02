@@ -9,7 +9,7 @@ export const getAllProperties = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_PROPERTIES_REQUEST });
 
-    const { data } = await axios.get('/property');
+    const { data } = await axios.get('/api/v1/property');
     dispatch({
       type: GET_ALL_PROPERTIES_SUCCESS,
       payload: data,
