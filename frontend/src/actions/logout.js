@@ -1,4 +1,4 @@
-import axios from '../http';
+import axios from 'axios';
 import {
   LOGOUT_REQUEST,
   LOGOUT_FAIL,
@@ -11,7 +11,6 @@ const logout = () => async (dispatch) => {
     dispatch({ type: LOGOUT_REQUEST });
 
     const { data } = await axios.get('/user/logout');
-    localStorage.removeItem('token');
     if (data.success) {
       dispatch({
         type: GET_ME_SUCCESS,
@@ -21,6 +20,7 @@ const logout = () => async (dispatch) => {
     dispatch({
       type: LOGOUT_SUCCESS,
     });
+    window.location.href = '/';
   } catch (err) {
     dispatch({
       type: LOGOUT_FAIL,

@@ -1,5 +1,7 @@
 .profile {
   height: calc(100vh - 100px);
+  /* background-color: var(--secondary); */
+  color: #fff;
 }
 @media (min-width: 701px) {
   .profile {

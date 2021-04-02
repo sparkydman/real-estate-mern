@@ -1,0 +1,31 @@
+.main__menu-profile {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.main__menu-profile > li {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+.main__menu-profile > li > span {
+  cursor: pointer;
+}
+.main__menu-profile > li:hover > ul {
+  display: block;
+  transition: all 0.5s;
+}
+.main__menu-profile > li > ul {
+  display: none;
+  width: 100%;
+}
+.main__menu-profile > li > ul > li {
+  padding: 5px 0;
+  list-style: none;
+  cursor: pointer;
+  padding-left: 1rem;
+  width: 100%;
+  transition: all 0.4s;
+}
+.main__menu-profile > li > ul > li:hover {
+  transform: scale(1.1);
+}

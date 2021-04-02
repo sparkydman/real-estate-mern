@@ -1,19 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import { css } from '@emotion/core';
-import ClipLoader from 'react-spinners/ClipLoader';
 import HouseItem from './HouseItem';
 // import houseImg from '/house.jpg';
 import './Houses.css';
 
 import { useSelector } from 'react-redux';
-
-const overide = css`
-  display: block;
-  margin: 0 auto;
-  border-color: #5dd95d;
-`;
+import Spinner from '../spinner';
 
 const Houses = () => {
   const [offset, setOffset] = useState(0);
@@ -70,14 +63,7 @@ const Houses = () => {
       </header>
       <div className="card__container">
         {loading ? (
-          <div className="loader">
-            <ClipLoader
-              css={overide}
-              size={100}
-              color={'#5dd95d'}
-              loading={loading}
-            />
-          </div>
+          <Spinner />
         ) : error ? (
           <p>{error}</p>
         ) : (

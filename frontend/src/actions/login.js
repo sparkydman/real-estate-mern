@@ -1,4 +1,5 @@
-import axios from '../http';
+import axios from 'axios';
+import getMe from './getMe';
 import { LOGIN_REQUEST, LOGIN_FAIL, LOGIN_SUCCESS } from '../constants/auth';
 
 const login = (userData) => async (dispatch) => {
@@ -10,6 +11,7 @@ const login = (userData) => async (dispatch) => {
       type: LOGIN_SUCCESS,
       payload: data,
     });
+    dispatch(getMe());
   } catch (err) {
     dispatch({
       type: LOGIN_FAIL,

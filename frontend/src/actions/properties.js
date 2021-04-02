@@ -1,4 +1,4 @@
-import axios from '../http';
+import axios from 'axios';
 import {
   GET_ALL_PROPERTIES_REQUEST,
   GET_ALL_PROPERTIES_SUCCESS,

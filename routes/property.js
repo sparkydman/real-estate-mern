@@ -39,7 +39,7 @@ route
     uploadGallery,
     catchError(addProperty)
   )
-  .get(query(Property, 'reviews'), catchError(getAllProperties));
+  .get(query(Property, 'reviews, agent'), catchError(getAllProperties));
 
 route.get('/search/:keywords', catchError(getAllSearchedProperties));
 

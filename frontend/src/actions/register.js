@@ -1,9 +1,10 @@
-import axios from '../http';
+import axios from 'axios';
 import {
   REGISTER_REQUEST,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
 } from '../constants/auth';
+import getMe from './getMe';
 
 const register = (userData) => async (dispatch) => {
   try {
@@ -14,6 +15,7 @@ const register = (userData) => async (dispatch) => {
       type: REGISTER_SUCCESS,
       payload: data,
     });
+    dispatch(getMe());
   } catch (err) {
     dispatch({
       type: REGISTER_FAIL,

@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { CLOSE_BOTTOM_NAV, TOGGLE_BOTTOM_NAV } from '../../constants/ui';
 import './Navbar.css';
-// import getMe from '../../actions/getMe';
+import Categories from '../dialog/Categories';
+import logout from '../../actions/logout';
 
 const Navbar = () => {
   const [active, setActive] = useState('home');
   const [categories, setCategories] = useState(false);
   const dispatch = useDispatch();
   const ui = useSelector((state) => state.ui);
+  const user = useSelector((state) => state.me);
+  const { loading, me } = user;
   const { toggleBottomNav } = ui;
 
   // console.log(user);
@@ -18,6 +21,7 @@ const Navbar = () => {
   // }, [dispatch]);
 
   const history = useHistory();
+
   useEffect(() => {
     if (toggleBottomNav) {
       setActive('signin');
@@ -92,7 +96,7 @@ const Navbar = () => {
                 Home
               </Link>
             </li>
-            <li>
+            <li className="active__category">
               <span
                 className={`link ${
                   active === 'categories' ? 'active__link' : ''
@@ -104,6 +108,9 @@ const Navbar = () => {
               >
                 Categories
               </span>
+              <ul className="category__menu">
+                <Categories />
+              </ul>
             </li>
             <li>
               <Link
@@ -131,40 +138,64 @@ const Navbar = () => {
                 About us
               </Link>
             </li>
-            {localStorage.token ? (
-              <li>
-                <span
-                  className={`link ${active === 'about' ? 'active__link' : ''}`}
-                  onClick={() => {
-                    if (toggleBottomNav) dispatch({ type: CLOSE_BOTTOM_NAV });
-                    setCategories(false);
-                    setActive('profile');
-                    history.push('/profile');
-                  }}
-                >
-                  Profile
-                </span>
-              </li>
-            ) : (
-              <li>
-                <span
-                  className={`link ${
-                    active === 'signin' ? 'active__link' : ''
-                  }`}
-                  onClick={() =>
-                    dispatch({
-                      type: TOGGLE_BOTTOM_NAV,
-                      payload: {
-                        elmt: 'login',
-                        title: 'Login',
-                        icon: 'lock',
-                      },
-                    })
-                  }
-                >
-                  Sign in
-                </span>
-              </li>
+            {!loading && (
+              <>
+                {me?.success ? (
+                  <li className="active__category">
+                    <span
+                      className={`link ${
+                        active === 'about' ? 'active__link' : ''
+                      }`}
+                    >
+                      Profile
+                    </span>
+                    <ul className="profile__dropdown">
+                      <li
+                        onClick={() => {
+                          if (toggleBottomNav)
+                            dispatch({ type: CLOSE_BOTTOM_NAV });
+                          setCategories(false);
+                          setActive('profile');
+                          history.push('/profile');
+                        }}
+                      >
+                        <span>View profile</span>
+                      </li>
+                      <li
+                        onClick={() => {
+                          if (toggleBottomNav)
+                            dispatch({ type: CLOSE_BOTTOM_NAV });
+                          setCategories(false);
+                          setActive('profile');
+                          dispatch(logout());
+                        }}
+                      >
+                        <span>Logout</span>
+                      </li>
+                    </ul>
+                  </li>
+                ) : (
+                  <li>
+                    <span
+                      className={`link ${
+                        active === 'signin' ? 'active__link' : ''
+                      }`}
+                      onClick={() =>
+                        dispatch({
+                          type: TOGGLE_BOTTOM_NAV,
+                          payload: {
+                            elmt: 'login',
+                            title: 'Login',
+                            icon: 'lock',
+                          },
+                        })
+                      }
+                    >
+                      Sign in
+                    </span>
+                  </li>
+                )}
+              </>
             )}
           </ul>
         </div>

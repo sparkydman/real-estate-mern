@@ -1,0 +1,24 @@
+.info__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding: 10px;
+}
+.info__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+}
+.info__card > h3 {
+  padding-bottom: 8px;
+}
+.info__icon {
+  color: var(--primary);
+}
+.info__price {
+  font-weight: bold;
+  padding: 10px 0;
+}

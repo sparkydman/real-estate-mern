@@ -9,9 +9,11 @@ const Home = () => {
   const dispatch = useDispatch();
   const ui = useSelector((state) => state.ui);
   const { toggleBottomNav, element, title, icon } = ui;
+  const propertyList = useSelector((state) => state.propertyList);
+  const { loading, properties } = propertyList;
   useEffect(() => {
-    dispatch(getAllProperties());
-  }, [dispatch]);
+    if (!loading && !properties?.success) dispatch(getAllProperties());
+  }, [loading, properties, dispatch]);
   return (
     <>
       <Houses />

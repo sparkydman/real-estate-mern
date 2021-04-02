@@ -15,9 +15,11 @@ const login = (state = { user: {} }, action) => {
       return { loading: true };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
+      localStorage.setItem('token', `Bearer ${payload.token}`);
       return { loading: false, user: payload };
     case LOGIN_FAIL:
     case REGISTER_FAIL:
+      localStorage.removeItem('token');
       return { loading: false, error: payload };
 
     default:

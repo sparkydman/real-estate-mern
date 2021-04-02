@@ -1,11 +1,15 @@
-import axios from '../http';
+import axios from 'axios';
 import { GET_ME_REQUEST, GET_ME_FAIL, GET_ME_SUCCESS } from '../constants/auth';
+import setAuthToken from '../component/util/setAuthToken';
 
-const login = (userData) => async (dispatch) => {
+const getMe = () => async (dispatch) => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
   try {
     dispatch({ type: GET_ME_REQUEST });
 
-    const { data } = await axios.get('/user/profile', userData);
+    const { data } = await axios.get('/user/profile');
     dispatch({
       type: GET_ME_SUCCESS,
       payload: data,
@@ -17,4 +21,4 @@ const login = (userData) => async (dispatch) => {
     });
   }
 };
-export default login;
+export default getMe;

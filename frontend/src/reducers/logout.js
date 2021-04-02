@@ -5,6 +5,7 @@ const logout = (state = { status: false }, action) => {
     case LOGOUT_REQUEST:
       return { loading: true };
     case LOGOUT_SUCCESS:
+      localStorage.removeItem('token');
       return { loading: false, status: true };
     case LOGOUT_FAIL:
       return { loading: false, error: action.payload };

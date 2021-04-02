@@ -8,9 +8,10 @@ import { TOGGLE_BOTTOM_NAV, CLOSE_BOTTOM_NAV } from '../../constants/ui';
 const BottomNav = () => {
   const dispatch = useDispatch();
   const ui = useSelector((state) => state.ui);
+  const user = useSelector((state) => state.me);
+  const { loading, me } = user;
   const { element } = ui;
   const history = useHistory();
-  const isEmpty = Boolean(localStorage.token);
 
   // useEffect(() => {
   //   dispatch(getMe());
@@ -19,7 +20,7 @@ const BottomNav = () => {
   const handleClick = (elmt) => {
     switch (elmt) {
       case 'notification':
-        return !isEmpty
+        return !loading && !me?.success
           ? dispatch({
               type: TOGGLE_BOTTOM_NAV,
               payload: { elmt: 'login', title: 'Login', icon: 'lock' },
@@ -33,14 +34,14 @@ const BottomNav = () => {
               },
             });
       case 'profile':
-        return !isEmpty
+        return !loading && !me?.success
           ? dispatch({
               type: TOGGLE_BOTTOM_NAV,
               payload: { elmt: 'login', title: 'Login', icon: 'lock' },
             })
           : history.push('/profile');
       case 'cart':
-        return !isEmpty
+        return !loading && !me?.success
           ? dispatch({
               type: TOGGLE_BOTTOM_NAV,
               payload: {

@@ -25,7 +25,6 @@ const Login = () => {
   };
   useEffect(() => {
     if (!loading && user?.success) {
-      localStorage.setItem('token', `Bearer ${user.token}`);
       setValue(initialState);
       dispatch({ type: CLOSE_BOTTOM_NAV });
     }

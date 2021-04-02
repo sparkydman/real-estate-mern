@@ -1,4 +1,4 @@
-import axios from '../http';
+import axios from 'axios';
 import {
   GET_PROPERRTY_DETAIL_FAIL,
   GET_PROPERRTY_DETAIL_REQUEST,

@@ -110,6 +110,9 @@
   transform: scale(1.1);
   transition: all 0.3s ease-in;
 }
+.bottom__menu li.active__category:hover {
+  transform: none;
+}
 .bottom__menu li .link:hover {
   color: var(--primary);
   transition: all 0.3s ease-in;
@@ -141,6 +144,32 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+}
+.active__category:hover > .category__menu,
+.active__category:hover > .profile__dropdown {
+  display: block;
+}
+
+.category__menu {
+  display: none;
+  position: absolute;
+  top: 100px;
+}
+.profile__dropdown {
+  display: none;
+  list-style-type: none;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff;
+  position: absolute;
+  top: 100px;
+  width: 15%;
+  line-height: 2;
+}
+.profile__dropdown > li:hover {
+  transform: none;
+  color: var(--primary);
+  cursor: pointer;
 }
 @media (max-width: 1028px) {
   .header {

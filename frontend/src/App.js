@@ -10,27 +10,30 @@ import HouseDetail from './screen/HouseDetail';
 import BottomNav from './component/Navbar/BottomNav';
 import { useStore } from 'react-redux';
 import getMe from './actions/getMe';
+import ProtectedRoute from './component/util/protectedRoute';
+import setAuthToken from './component/util/setAuthToken';
 
 const App = () => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
   const store = useStore();
   useEffect(() => {
     store.dispatch(getMe());
   }, [store]);
-  const user = store.getState().me;
-  const { me } = user;
-  console.log(me);
+
   return (
     <BrowserRouter>
-      <Navbar user={me} />
+      <Navbar />
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/about-us" exact component={About} />
         <Route path="/contact-us" exact component={Contact} />
-        <Route path="/cart" exact component={Cart} />
-        <Route path="/profile" exact component={Profile} />
+        <ProtectedRoute path="/cart" exact component={Cart} />
+        <ProtectedRoute path="/profile" exact component={Profile} />
         <Route path="/:houseId" exact component={HouseDetail} />
       </Switch>
-      <BottomNav user={me} />
+      <BottomNav />
     </BrowserRouter>
   );
 };

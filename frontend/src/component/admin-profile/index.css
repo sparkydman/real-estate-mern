@@ -1,0 +1,75 @@
+.profile__container {
+  width: 80%;
+  height: calc(100vh - 100px);
+  margin: 0 auto;
+  display: flex;
+}
+.user__feed {
+  flex: 1;
+  color: var(--secondary);
+  height: 100%;
+  overflow: scroll;
+  padding: 1rem;
+}
+.user__detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: var(--secondary);
+  height: 100%;
+  overflow-y: scroll;
+  transition: all 0.4s;
+}
+.user__top-info {
+  display: flex;
+  flex-direction: column;
+}
+.user__top-info > .user__names {
+  padding: 10px 0;
+}
+.user__names > h2 {
+  text-align: center;
+  padding-bottom: 10px;
+}
+.user__names > .role > span {
+  font-weight: bold;
+}
+.user__bottom-info {
+  align-self: flex-start;
+  padding-top: 2rem;
+}
+.user__feed-table {
+  padding: 0.8rem 0;
+  width: 100%;
+}
+.user__feed-table table {
+  width: 100%;
+}
+.dashboard__table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.dashboard__table td,
+.dashboard__table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.dashboard__table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.dashboard__table tr:hover {
+  background-color: #ddd;
+}
+
+.dashboard__table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: white;
+}

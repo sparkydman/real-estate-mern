@@ -47,7 +47,6 @@ const Register = () => {
 
   useEffect(() => {
     if (!loading && user?.success) {
-      localStorage.setItem('token', `Bearer ${user.token}`);
       dispatch({ type: CLOSE_BOTTOM_NAV });
     }
   }, [user, loading, dispatch]);

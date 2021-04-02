@@ -1,16 +1,31 @@
 import React from 'react';
-import './categories.scss';
+import './categories.css';
 
 const Categories = () => {
   return (
     <div className="categories">
       <div className="category__card">
         <div className="card__img_categories">
+          <img src="/duplex.jpg" alt="room" />
+        </div>
+        <div className="card__body_categories">
+          <h4>Duplex</h4>
+        </div>
+      </div>
+      <div className="category__card">
+        <div className="card__img_categories">
+          <img src="/bungalow.jpg" alt="room" />
+        </div>
+        <div className="card__body_categories">
+          <h4>Bungalow</h4>
+        </div>
+      </div>
+      <div className="category__card">
+        <div className="card__img_categories">
           <img src="/room.jpg" alt="room" />
         </div>
         <div className="card__body_categories">
-          <h3>Room</h3>
-          <span>(12)</span>
+          <h4>Room</h4>
         </div>
       </div>
       <div className="category__card">
@@ -18,8 +33,7 @@ const Categories = () => {
           <img src="/shop.jpg" alt="room" />
         </div>
         <div className="card__body_categories">
-          <h3>Shops</h3>
-          <span>(49)</span>
+          <h4>Shops</h4>
         </div>
       </div>
       <div className="category__card">
@@ -27,17 +41,47 @@ const Categories = () => {
           <img src="/flat.jpg" alt="room" />
         </div>
         <div className="card__body_categories">
-          <h3>Flat</h3>
-          <span>(102)</span>
+          <h4>Flat</h4>
         </div>
       </div>
       <div className="category__card">
         <div className="card__img_categories">
-          <img src="/duplex.jpg" alt="room" />
+          <img src="/attach.jpg" alt="room" />
         </div>
         <div className="card__body_categories">
-          <h3>Duplex</h3>
-          <span>(120)</span>
+          <h4>Attach</h4>
+        </div>
+      </div>
+      <div className="category__card">
+        <div className="card__img_categories">
+          <img src="/self-contain.jpg" alt="room" />
+        </div>
+        <div className="card__body_categories">
+          <h4>Self-contain</h4>
+        </div>
+      </div>
+      <div className="category__card">
+        <div className="card__img_categories">
+          <img src="/container.jpg" alt="room" />
+        </div>
+        <div className="card__body_categories">
+          <h4>Container</h4>
+        </div>
+      </div>
+      <div className="category__card">
+        <div className="card__img_categories">
+          <img src="/warehouse.jpg" alt="room" />
+        </div>
+        <div className="card__body_categories">
+          <h4>Warehouse</h4>
+        </div>
+      </div>
+      <div className="category__card">
+        <div className="card__img_categories">
+          <img src="/land.jpg" alt="room" />
+        </div>
+        <div className="card__body_categories">
+          <h4>Land</h4>
         </div>
       </div>
     </div>

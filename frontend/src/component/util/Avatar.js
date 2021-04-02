@@ -16,6 +16,7 @@ const Avatar = ({ width, height, url }) => {
     height: '100%',
     objectFit: 'cover',
     objectPosition: 'center',
+    borderRadius: '50%',
   };
   const iconStyle = {
     width: '100%',
@@ -29,7 +30,7 @@ const Avatar = ({ width, height, url }) => {
     fontSize: '2rem',
   };
   return (
-    <span style={style}>
+    <div style={style}>
       {url ? (
         <img src={url} style={imgStyle} alt="" />
       ) : (
@@ -37,7 +38,7 @@ const Avatar = ({ width, height, url }) => {
           <i className="fa fa-user"></i>
         </span>
       )}
-    </span>
+    </div>
   );
 };
 
