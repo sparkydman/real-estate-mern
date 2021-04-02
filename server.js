@@ -31,8 +31,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
-);
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? 'https://real-estate-space.herokuapp.com'
+        : 'http://localhost:3000',
+  });
 
 // add express json middleware
 app.use(express.json());
