@@ -35,7 +35,8 @@ app.use(
       process.env.NODE_ENV === 'production'
         ? 'https://real-estate-space.herokuapp.com'
         : 'http://localhost:3000',
-  });
+  })
+);
 
 // add express json middleware
 app.use(express.json());
