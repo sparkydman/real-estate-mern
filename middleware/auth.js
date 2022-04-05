@@ -1,8 +1,8 @@
-import ErrorRes from '../utils/ErrorRes.js';
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+const ErrorRes = require('../utils/ErrorRes.js');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User.js');
 
-export const requiredAuth = async (req, res, next) => {
+const requiredAuth = async (req, res, next) => {
   let token = req.headers['authorization'];
   if (!token || !token.startsWith('Bearer')) {
     return res.status(401).json({
@@ -28,7 +28,7 @@ export const requiredAuth = async (req, res, next) => {
   }
 };
 
-export const getme = async (req, res, next) => {
+const getme = async (req, res, next) => {
   let token = req.headers['authorization'];
   if (!token) {
     req.user = {};
@@ -53,7 +53,7 @@ export const getme = async (req, res, next) => {
   }
 };
 
-export const requiredRole = (...roles) => {
+const requiredRole = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return res.status(401).json({
@@ -68,3 +68,5 @@ export const requiredRole = (...roles) => {
     next();
   };
 };
+
+module.exports = { requiredAuth, requiredRole, getme };

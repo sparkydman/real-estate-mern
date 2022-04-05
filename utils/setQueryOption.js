@@ -1,4 +1,4 @@
-export const setQueryOptions = (role, field) => {
+module.exports = (role, field) => {
   const queryOptions = {};
   if (role === 'admin') {
     queryOptions._id = field;

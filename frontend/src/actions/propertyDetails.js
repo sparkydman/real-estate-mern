@@ -6,6 +6,7 @@ import {
 } from '../constants/properties';
 
 const propertyDetail = (propertyId) => async (dispatch) => {
+  console.log(propertyId);
   try {
     dispatch({ type: GET_PROPERRTY_DETAIL_REQUEST });
 

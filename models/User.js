@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const UserShema = new mongoose.Schema(
   {
@@ -73,6 +73,8 @@ const UserShema = new mongoose.Schema(
     createdAt: { type: Date, default: Date.now() },
     resetPasswordToken: String,
     resetPasswordTokenExpire: Date,
+    properties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   },
   {
     toJSON: { virtuals: true },
@@ -103,24 +105,24 @@ UserShema.pre('save', async function (next) {
   this.confirmPassword = undefined;
 });
 
-UserShema.virtual('properties', {
-  ref: 'Property',
-  localField: '_id',
-  foreignField: 'agent',
-  justOnce: false,
-});
-UserShema.virtual('reviews', {
-  ref: 'Review',
-  localField: '_id',
-  foreignField: 'agent',
-  justOnce: false,
-});
+// UserShema.virtual('properties', {
+//   ref: 'Property',
+//   localField: '_id',
+//   foreignField: 'agent',
+//   justOnce: false,
+// });
+// UserShema.virtual('reviews', {
+//   ref: 'Review',
+//   localField: '_id',
+//   foreignField: 'agent',
+//   justOnce: false,
+// });
 
 UserShema.index({ firstname: 'text', lastname: 'text' });
 
 const autoPoputlateReviewAndProperties = function (next) {
   this.populate('reviews', '_id text user');
-  this.populate('properties', '_id title images purchasedBy');
+  this.populate('properties', '_id title images -agent');
   next();
 };
 
@@ -159,4 +161,4 @@ UserShema.pre('remove', async function (next) {
   next();
 });
 
-export default mongoose.model('User', UserShema);
+module.exports = mongoose.model('User', UserShema);

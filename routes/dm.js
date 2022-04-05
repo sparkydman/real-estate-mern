@@ -1,12 +1,12 @@
-import express from 'express';
-import catchError from '../utils/catchError.js';
-import { requiredAuth } from '../middleware/auth.js';
-import {
+const express = require('express');
+const catchError = require('../utils/catchError.js');
+const { requiredAuth } = require('../middleware/auth.js');
+const {
   deleteDm,
   getAllDmToAndFrom,
   getDmById,
   postDm,
-} from '../controllers/dm.js';
+} = require('../controllers/dm.js');
 
 const route = express.Router();
 
@@ -44,4 +44,4 @@ route.put('/like/:dmId', requiredAuth, catchError());
 // @desc Dislike a dm
 route.put('/dislike/:dmId', requiredAuth, catchError());
 
-export default route;
+module.exports = route;

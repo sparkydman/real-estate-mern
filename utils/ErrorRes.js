@@ -8,4 +8,4 @@ class ErrorRes extends Error {
   }
 }
 
-export default ErrorRes;
+module.exports = ErrorRes;

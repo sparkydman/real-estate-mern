@@ -1,4 +1,4 @@
-import multer from 'multer';
+const multer = require('multer');
 
 const uploadProcess = {
   limits: 1024 * 1024 * 1,
@@ -11,10 +11,12 @@ const uploadProcess = {
   },
 };
 
-export const uploadGallery = multer({
+const uploadGallery = multer({
   uploadProcess,
 }).array('images', 20);
 
-export const uploadAvatar = multer({
+const uploadAvatar = multer({
   uploadProcess,
 }).single('avatar');
+
+module.exports = { uploadAvatar, uploadGallery };

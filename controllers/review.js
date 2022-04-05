@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
-import Review from '../models/Review.js';
-import ErrorRes from '../utils/ErrorRes.js';
-import { mailHandler } from '../utils/mail.js';
+const mongoose = require('mongoose');
+const Review = require('../models/Review.js');
+const ErrorRes = require('../utils/ErrorRes.js');
+const { mailHandler } = require('../utils/mail.js');
 
-export const addPropertyReview = async (req, res) => {
+const addPropertyReview = async (req, res) => {
   req.body.user = req.user.id;
 
   if (!req.property) {
@@ -50,7 +50,7 @@ export const addPropertyReview = async (req, res) => {
   });
 };
 
-export const addAgentReview = async (req, res) => {
+const addAgentReview = async (req, res) => {
   req.body.user = req.user.id;
 
   if (req.profile.role !== undefined && req.profile.role !== 'agent') {
@@ -109,7 +109,7 @@ export const addAgentReview = async (req, res) => {
   });
 };
 
-export const getReviewById = async (req, res, next, id) => {
+const getReviewById = async (req, res, next, id) => {
   const review = await Review.findOne({ _id: id });
   if (review) {
     req.review = review;
@@ -124,7 +124,7 @@ export const getReviewById = async (req, res, next, id) => {
   }
   next();
 };
-export const getSingleReview = async (req, res) => {
+const getSingleReview = async (req, res) => {
   if (!req.review) {
     return res.status(404).json({
       success: false,
@@ -137,7 +137,7 @@ export const getSingleReview = async (req, res) => {
   });
 };
 
-export const updateReview = async (req, res) => {
+const updateReview = async (req, res) => {
   const review = await Review.findOneAndUpdate(
     { _id: req.review.id },
     { $set: { text: req.body.text } },
@@ -150,7 +150,7 @@ export const updateReview = async (req, res) => {
   });
 };
 
-export const deleteReview = async (req, res) => {
+const deleteReview = async (req, res) => {
   const review = await Review.findOneAndDelete({ _id: req.review.id });
 
   if (req.user.role === 'admin') {
@@ -168,7 +168,7 @@ export const deleteReview = async (req, res) => {
   });
 };
 
-export const likeReview = async (req, res) => {
+const likeReview = async (req, res) => {
   if (!req.review) {
     return res.status(404).json({
       success: false,
@@ -198,7 +198,7 @@ export const likeReview = async (req, res) => {
   });
 };
 
-export const disDikeReview = async (req, res) => {
+const disDikeReview = async (req, res) => {
   if (!req.review) {
     return res.status(404).json({
       success: false,
@@ -228,7 +228,7 @@ export const disDikeReview = async (req, res) => {
   });
 };
 
-export const authorizeReview = (req, res, next) => {
+const authorizeReview = (req, res, next) => {
   if (!req.review) {
     return res.status(404).json({
       success: false,
@@ -242,4 +242,16 @@ export const authorizeReview = (req, res, next) => {
     });
   }
   next();
+};
+
+module.exports = {
+  addAgentReview,
+  addPropertyReview,
+  deleteReview,
+  authorizeReview,
+  likeReview,
+  disDikeReview,
+  updateReview,
+  getReviewById,
+  getSingleReview,
 };

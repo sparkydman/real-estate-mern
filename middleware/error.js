@@ -1,7 +1,7 @@
-import ErrorRes from '../utils/ErrorRes.js';
+const ErrorRes = require('../utils/ErrorRes.js');
 
 const errorHandler = (err, req, res, next) => {
-  console.log(err);
+  // console.log(err);
   try {
     if (err.name === 'ValidationError') {
       return (err = handleValidationErr(err, res));
@@ -21,6 +21,12 @@ const errorHandler = (err, req, res, next) => {
 };
 
 const handleValidationErr = (err, res) => {
+  /*
+  #swagger.response[400]={
+    description: "Bad request, due to some incorrect fields",
+    schema: { $ref: "#/definitions/FieldErrorResponse" }
+  }
+  */
   const errors = Object.values(err.errors).map((err) => err.message);
   const paths = Object.values(err.errors).map((err) => err.path);
 
@@ -47,4 +53,4 @@ const handleDuplicateError = (err, res) => {
   });
 };
 
-export default errorHandler;
+module.exports = errorHandler;

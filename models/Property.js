@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import slugity from 'slugify';
-import geocode from '../utils/geocode.js';
-import { destroyImage } from '../utils/uploadFile.js';
+const mongoose = require('mongoose');
+const slugity = require('slugify');
+const geocode = require('../utils/geocode.js');
+const { destroyImage } = require('../utils/uploadFile.js');
 
 const { ObjectId } = mongoose.Schema;
 
@@ -107,13 +107,6 @@ PropertySchema.index({
   keywords: 'text',
 });
 
-PropertySchema.virtual('reviews', {
-  ref: 'Review',
-  localField: '_id',
-  foreignField: 'property',
-  justOnce: false,
-});
-
 // slugify the tiitle
 PropertySchema.pre('save', function (next) {
   this.slug = slugity(this.title, { lower: true });
@@ -145,4 +138,11 @@ PropertySchema.pre('save', async function (next) {
   next();
 });
 
-export default mongoose.model('Property', PropertySchema);
+const autoPopulateUser = function (next) {
+  this.populate('agent', 'firstname lastname avatar');
+  next();
+};
+
+PropertySchema.pre('findOne', autoPopulateUser).pre('find', autoPopulateUser);
+
+module.exports = mongoose.model('Property', PropertySchema);

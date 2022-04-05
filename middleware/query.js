@@ -1,7 +1,14 @@
-export const query = (model, populate) => async (req, res, next) => {
+const propertySearch = require('../utils/propertySearch');
+const userSearchKeyword = require('../utils/userSearchKeyword');
+
+const query = (model, populate) => async (req, res, next) => {
   let query;
 
   const queryValue = { ...req.query };
+
+  const keywords = req.url.concludes('user/search')
+    ? userSearchKeyword(req)
+    : propertySearch(req);
 
   //   Query string that should not be treated as fields
   const removeFields = ['select', 'sort', 'page', 'limit'];
@@ -32,7 +39,16 @@ export const query = (model, populate) => async (req, res, next) => {
   }
 
   //   Find resource
-  query = model.find({ ...queryOption, ...JSON.parse(queryString) });
+  query = model.find({
+    ...queryOption,
+    ...keywords,
+    ...JSON.parse(queryString),
+  });
+
+  //   populate query
+  if (populate) {
+    query = query.populate(populate);
+  }
 
   //   Handle selecting; query some specific fields
   if (req.query.select) {
@@ -58,11 +74,6 @@ export const query = (model, populate) => async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
-  //   populate query
-  if (populate) {
-    query = query.populate(populate);
-  }
-
   const results = await query;
 
   const pagination = {};
@@ -81,3 +92,5 @@ export const query = (model, populate) => async (req, res, next) => {
   };
   next();
 };
+
+module.exports = { query };

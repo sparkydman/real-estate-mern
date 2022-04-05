@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "lint": "lint . --ignore-path .gitignore ",
     "lint:quiet": "npm run lint -- -- quiet",
     "lint:fix": "npm run lint -- -- fix",
     "start": "node server.js",
     "server": "nodemon server.js",
+    "swagger": "node swagger.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "Chigozie Ugwuede",
@@ -30,12 +31,16 @@
     "node-geocoder": "^3.27.0",
     "nodemailer": "^6.4.17",
     "slugify": "^1.4.6",
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+    "swagger-autogen": "^2.8.0",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.4",
     "concurrently": "^5.3.0",
     "eslint": "^7.16.0",
-    "husky": "^4.3.6"
+    "husky": "^4.3.6",
+    "jest": "^26.6.3"
   },
   "husky": {
     "hooks": {

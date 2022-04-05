@@ -1,8 +1,8 @@
-import nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 // import dotenv from 'dotenv';
 // dotenv.config()
 
-export const mailHandler = async ({
+const mailHandler = async ({
   from,
   to,
   subject = '',
@@ -28,3 +28,5 @@ export const mailHandler = async ({
 
   console.log('Message sent: %s', info.messageId);
 };
+
+module.exports = { mailHandler };

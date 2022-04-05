@@ -24,6 +24,8 @@ const HouseDetail = ({ match }) => {
     const id = match.params.houseId;
     if (property && property.success && property.data._id !== id) {
       dispatch(getPropertyDetail(id));
+    } else {
+      dispatch(getPropertyDetail(id));
     }
   }, [dispatch, property, match]);
 

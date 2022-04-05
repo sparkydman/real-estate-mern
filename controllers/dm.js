@@ -1,9 +1,9 @@
-import Dm from '../models/Dm.js';
-import User from '../models/User.js';
-import ErrorRes from '../utils/ErrorRes.js';
-import mongoose from 'mongoose';
+const Dm = require('../models/Dm.js');
+const User = require('../models/User.js');
+const ErrorRes = require('../utils/ErrorRes.js');
+const mongoose = require('mongoose');
 
-export const postDm = async (req, res) => {
+const postDm = async (req, res) => {
   req.body.from = req.user.id;
   const user = await User.findOne({ _id: req.params.to }).select(
     'firstname lastname avatar'
@@ -32,7 +32,7 @@ export const postDm = async (req, res) => {
   });
 };
 
-export const getDmById = async (req, res, next, id) => {
+const getDmById = async (req, res, next, id) => {
   const dm = await Dm.findOne({ _id: id });
   if (!dm) {
     return res.status(404).json({
@@ -52,7 +52,7 @@ export const getDmById = async (req, res, next, id) => {
   next();
 };
 
-export const deleteDm = async (req, res) => {
+const deleteDm = async (req, res) => {
   if (!req.dm) {
     return res.status(404).json({
       success: false,
@@ -72,7 +72,7 @@ export const deleteDm = async (req, res) => {
   });
 };
 
-export const getAllDmToAndFrom = async (req, res) => {
+const getAllDmToAndFrom = async (req, res) => {
   const dms = await Dm.find({ from: req.user.id, to: req.params.from });
 
   res.status(200).json({
@@ -81,3 +81,5 @@ export const getAllDmToAndFrom = async (req, res) => {
     data: dms,
   });
 };
+
+module.exports = { getAllDmToAndFrom, deleteDm, getDmById, postDm };

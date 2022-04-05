@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import {
+const { Router } = require('express');
+const {
   addProperty,
   deleteProperty,
   getAllProperties,
@@ -12,13 +12,13 @@ import {
   authorizeProperty,
   getAllSearchedProperties,
   deleteImg,
-} from '../controllers/property.js';
-import { getUserById } from '../controllers/user.js';
-import { requiredAuth, requiredRole } from '../middleware/auth.js';
-import { query } from '../middleware/query.js';
-import catchError from '../utils/catchError.js';
-import Property from '../models/Property.js';
-import { uploadGallery } from '../middleware/uploadFile.js';
+} = require('../controllers/property.js');
+const { getUserById } = require('../controllers/user.js');
+const { requiredAuth, requiredRole } = require('../middleware/auth.js');
+const { query } = require('../middleware/query.js');
+const catchError = require('../utils/catchError.js');
+const Property = require('../models/Property.js');
+const { uploadGallery } = require('../middleware/uploadFile.js');
 
 const route = Router();
 
@@ -39,9 +39,13 @@ route
     uploadGallery,
     catchError(addProperty)
   )
-  .get(query(Property, 'reviews, agent'), catchError(getAllProperties));
+  .get(query(Property, ''), catchError(getAllProperties));
 
-route.get('/search/:keywords', catchError(getAllSearchedProperties));
+route.get(
+  '/search/:keywords',
+  query(Property, ''),
+  catchError(getAllSearchedProperties)
+);
 
 // @route /api/property/:id
 // @method GET
@@ -105,4 +109,4 @@ route.put(
   catchError(deleteImg)
 );
 
-export default route;
+module.exports = route;

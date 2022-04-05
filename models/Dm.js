@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const { ObjectId } = mongoose.Schema;
 
@@ -24,4 +24,4 @@ const DmShechema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('Dm', DmShechema);
+module.exports = mongoose.model('Dm', DmShechema);

@@ -1,7 +1,7 @@
-import express from 'express';
-import catchError from '../utils/catchError.js';
-import { requiredAuth, requiredRole } from '../middleware/auth.js';
-import {
+const express = require('express');
+const catchError = require('../utils/catchError.js');
+const { requiredAuth, requiredRole } = require('../middleware/auth.js');
+const {
   addAgentReview,
   addPropertyReview,
   authorizeReview,
@@ -11,9 +11,9 @@ import {
   getSingleReview,
   likeReview,
   updateReview,
-} from '../controllers/review.js';
-import { getPropertyById } from '../controllers/property.js';
-import { getUserById } from '../controllers/user.js';
+} = require('../controllers/review.js');
+const { getPropertyById } = require('../controllers/property.js');
+const { getUserById } = require('../controllers/user.js');
 
 const route = express.Router();
 
@@ -100,4 +100,4 @@ route.put(
   catchError(disDikeReview)
 );
 
-export default route;
+module.exports = route;

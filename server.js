@@ -1,17 +1,19 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import morgan from 'morgan';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import path from 'path';
+const express = require('express');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const path = require('path');
+const swaggerUI = require('swagger-ui-express');
 
-import property from './routes/property.js';
-import review from './routes/review.js';
-import user from './routes/user.js';
-import dm from './routes/dm.js';
+const property = require('./routes/property.js');
+const review = require('./routes/review.js');
+const user = require('./routes/user.js');
+const dm = require('./routes/dm.js');
+const swaggerFile = require('./swagger-output.json');
 
-import errorHandler from './middleware/error.js';
-import { getme } from './middleware/auth.js';
+const errorHandler = require('./middleware/error.js');
+const { getme } = require('./middleware/auth.js');
 
 dotenv.config();
 
@@ -49,10 +51,11 @@ app.use('/api/v1/property', property);
 app.use('/api/v1/user', user);
 app.use('/api/v1/review', review);
 app.use('/api/v1/dm', dm);
+app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
 app.use(errorHandler);
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('frontend/build'));

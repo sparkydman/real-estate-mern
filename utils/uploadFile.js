@@ -1,9 +1,9 @@
-import { v2 as cloudinary } from 'cloudinary';
-import streamifier from 'streamifier';
-import dotenv from 'dotenv';
+const { v2: cloudinary } = require('cloudinary');
+const streamifier = require('streamifier');
+const dotenv = require('dotenv');
 dotenv.config();
 
-export const uploadImgToCloudinary = (file, prev_img, width, height) => {
+const uploadImgToCloudinary = (file, prev_img, width, height) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
@@ -27,15 +27,15 @@ export const uploadImgToCloudinary = (file, prev_img, width, height) => {
   });
 };
 
-export const waitFor = (ms) => new Promise((r) => setTimeout(r, ms));
+const waitFor = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export const asyncForEach = async (array, callback) => {
+const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }
 };
 
-export const destroyImage = async (img_url) => {
+const destroyImage = async (img_url) => {
   let img_public_id = '';
   const imgSplit = img_url.split('/');
   img_public_id = imgSplit[imgSplit.length - 1].split('.')[0];
@@ -46,3 +46,5 @@ export const destroyImage = async (img_url) => {
     if (error) console.log(error);
   });
 };
+
+module.exports = { waitFor, uploadImgToCloudinary, destroyImage, asyncForEach };

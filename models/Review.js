@@ -1,11 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 
 const ReviewShema = new mongoose.Schema({
-  property: {
-    type: ObjectId,
-    ref: 'Property',
-  },
   agent: {
     type: ObjectId,
     ref: 'User',
@@ -24,7 +20,7 @@ const ReviewShema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now() },
 });
 
-// ReviewShema.index({ agent: 1, property: 1 }, { unique: true });
+ReviewShema.index({ agent: 1 }, { unique: true });
 
 const pupolateUser = function (next) {
   this.populate('user', '_id firstname lastname avatar');
@@ -33,4 +29,4 @@ const pupolateUser = function (next) {
 
 ReviewShema.pre('find', pupolateUser).pre('findOne', pupolateUser);
 
-export default mongoose.model('Review', ReviewShema);
+module.exports = mongoose.model('Review', ReviewShema);
